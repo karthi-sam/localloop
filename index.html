@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>LocalLoop | Hyperlocal Community Hub</title>
-    <!-- Google Fonts for modern typography & smooth icons (Font Awesome) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>Kascalo | Investor Pitch — Hyperlocal Community Platform</title>
+    <!-- Google Fonts + Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -16,368 +16,366 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(145deg, #faf5ff 0%, #f3e8ff 100%);
-            color: #1e1a2f;
+            background: #ffffff;
+            color: #0b2545;
             line-height: 1.5;
             scroll-behavior: smooth;
         }
 
-        /* Custom cursor + interactive micro-interactions */
-        button, .nav-link, .card, .feature-card, .contact-card button, .footer-social i {
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        /* light purple theme variables */
+        /* LIGHT BLUE & WHITE INVESTOR-GRADE THEME */
         :root {
-            --purple-light: #e9d5ff;
-            --purple-soft: #d8b4fe;
-            --purple-medium: #c084fc;
-            --purple-deep: #a855f7;
-            --purple-dark: #7e22ce;
-            --purple-glow: rgba(168, 85, 247, 0.3);
-            --bg-glass: rgba(255, 255, 255, 0.7);
-            --shadow-sm: 0 10px 25px -5px rgba(126, 34, 206, 0.1), 0 8px 10px -6px rgba(0,0,0,0.02);
-            --shadow-md: 0 20px 30px -12px rgba(126, 34, 206, 0.15);
+            --blue-light: #eef5ff;
+            --blue-bright: #4a80e5;
+            --blue-deep: #1e4a8f;
+            --blue-soft: #7ba9f0;
+            --blue-mist: #cadef9;
+            --blue-accent: #2c6ecc;
+            --white-pure: #ffffff;
+            --gray-cool: #f8fafc;
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 28px -12px rgba(30, 74, 143, 0.12);
+            --shadow-lg: 0 25px 40px -12px rgba(26, 58, 105, 0.2);
             --border-radius-card: 28px;
+            --border-radius-btn: 40px;
         }
 
-        /* animated gradient header */
-        header {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
-            background-size: 200% 200%;
-            animation: softGlow 6s ease infinite alternate;
+        /* smooth gradient background accents (white/light blue gradient) */
+        .bg-gradient-light {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+        }
+
+        /* header with crisp light blue & modern finance-grade style */
+        .hero-section {
+            background: linear-gradient(115deg, #0b2545 0%, #1e4a8f 65%, #3a7bd5 100%);
             color: white;
-            padding: 3rem 2rem;
-            text-align: center;
+            padding: 3rem 2rem 4rem 2rem;
             border-bottom-left-radius: 2rem;
             border-bottom-right-radius: 2rem;
-            box-shadow: 0 15px 35px rgba(126, 34, 206, 0.2);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         }
 
-        @keyframes softGlow {
-            0% { background-position: 0% 30%; }
-            100% { background-position: 100% 70%; }
-        }
-
-        header::before {
-            content: "✨";
+        .hero-section::before {
+            content: "◉";
             position: absolute;
-            font-size: 10rem;
-            opacity: 0.08;
-            bottom: -20px;
-            right: -20px;
+            font-size: 18rem;
+            opacity: 0.06;
+            bottom: -60px;
+            right: -40px;
             pointer-events: none;
-            transform: rotate(10deg);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 3.4rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            background: white;
-            background: linear-gradient(to right, #ffffff, #f3e8ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            color: white;
         }
 
-        header p {
-            font-size: 1.25rem;
-            opacity: 0.95;
-            margin-top: 0.5rem;
-            font-weight: 500;
-        }
-
-        /* modern glassmorphism nav */
-        nav {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            padding: 0.9rem 1.5rem;
-            border-radius: 80px;
-            width: fit-content;
-            margin: -1.8rem auto 1rem auto;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(192, 132, 252, 0.3);
-            position: sticky;
-            top: 16px;
-            z-index: 100;
-            transition: all 0.3s;
-        }
-
-        nav a {
-            color: #4c1d95;
-            font-weight: 600;
-            margin: 0 1.2rem;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: 0.2s;
-            position: relative;
-            padding: 6px 0;
-            display: inline-block;
-        }
-
-        nav a i {
-            margin-right: 6px;
-            font-size: 0.9rem;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 2.5px;
-            background: linear-gradient(90deg, #a855f7, #c084fc);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        nav a:hover {
-            color: #7e22ce;
-            transform: translateY(-2px);
-        }
-
-        /* sections layout */
-        section {
-            padding: 2.5rem 1.5rem;
+        .hero-content {
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            background: linear-gradient(130deg, #5b21b6, #a855f7);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            margin-bottom: 1.8rem;
-            letter-spacing: -0.3px;
-            border-left: 6px solid #c084fc;
-            padding-left: 18px;
-        }
-
-        /* cards with interactive hover 3D + light purple glow */
-        .card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(4px);
-            border-radius: var(--border-radius-card);
-            padding: 1.8rem;
-            margin: 1.2rem 0;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(192, 132, 252, 0.4);
-            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            z-index: 2;
         }
 
-        .card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: var(--shadow-md);
-            border-color: #c084fc;
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        /* features grid with interactive icon cards */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: 2rem;
-            padding: 1.8rem 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-            border: 1px solid #f0e6ff;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-12px);
-            background: linear-gradient(145deg, #ffffff, #faf5ff);
-            border-color: #d8b4fe;
-            box-shadow: 0 25px 35px -12px rgba(139, 92, 246, 0.25);
-        }
-
-        .feature-card i {
-            font-size: 2.8rem;
-            background: linear-gradient(145deg, #a855f7, #d946ef);
+        .hero-title {
+            font-size: 3.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #ffffff, #d4e6ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 1rem;
-            transition: transform 0.2s;
-            display: inline-block;
         }
 
-        .feature-card:hover i {
-            transform: scale(1.1);
+        .hero-subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            max-width: 650px;
+            opacity: 0.92;
+            margin-bottom: 2rem;
         }
 
-        .feature-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.6rem;
-            color: #2d1b4e;
-        }
-
-        .feature-card p {
-            color: #433878;
-            font-weight: 500;
-        }
-
-        /* vision quote style */
-        .vision-card {
-            background: linear-gradient(115deg, #f5f0ff, #ffffff);
-            position: relative;
-            border-left: 8px solid #c084fc;
-        }
-
-        .vision-card p {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        /* contact section button & interactive */
-        .contact-card {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-details {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin: 0.5rem 0 1rem;
-        }
-
-        .contact-details p {
-            background: #f3e8ff;
-            padding: 0.5rem 1.2rem;
+        .stat-badge {
+            display: inline-flex;
+            gap: 1.5rem;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 0.8rem 1.8rem;
             border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* Navigation — clean white with subtle blue border */
+        .nav-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: -1.8rem;
+            position: relative;
+            z-index: 20;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-radius: 80px;
+            padding: 0.6rem 1.8rem;
+            display: inline-flex;
+            gap: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(74, 128, 229, 0.25);
+        }
+
+        .glass-nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1e3a6b;
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .glass-nav a i {
+            margin-right: 8px;
+            color: var(--blue-bright);
+        }
+
+        .glass-nav a:hover {
+            color: var(--blue-accent);
+            border-bottom-color: var(--blue-bright);
+        }
+
+        /* section styling */
+        section {
+            max-width: 1200px;
+            margin: 2rem auto 3rem;
+            padding: 1.2rem 2rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0b2b4a;
+            border-left: 6px solid var(--blue-bright);
+            padding-left: 1.2rem;
+            margin-bottom: 2rem;
+            letter-spacing: -0.3px;
+        }
+
+        /* investor-focused cards: clean, white, professional */
+        .card-white {
+            background: var(--white-pure);
+            border-radius: var(--border-radius-card);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e9f0fc;
+            transition: all 0.3s ease;
+        }
+
+        .card-white:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--blue-mist);
+        }
+
+        /* metrics grid for investors */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .metric-card {
+            background: var(--white-pure);
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #eef2fc;
+            transition: all 0.2s;
+        }
+
+        .metric-card i {
+            font-size: 2.4rem;
+            color: var(--blue-bright);
+            margin-bottom: 1rem;
+        }
+
+        .metric-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #0b2545;
+            line-height: 1.2;
+        }
+
+        .metric-label {
+            color: #3a5e8c;
+            font-weight: 500;
+        }
+
+        /* Features grid with clean icons */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .feature-item {
+            background: var(--white-pure);
+            border-radius: 2rem;
+            padding: 1.6rem;
+            text-align: left;
+            border: 1px solid #edf3fe;
+            transition: all 0.25s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-6px);
+            border-color: var(--blue-soft);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            background: #eef5ff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.4rem;
+        }
+
+        .feature-icon i {
+            font-size: 1.8rem;
+            color: var(--blue-accent);
+        }
+
+        .feature-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        /* market opportunity / traction */
+        .traction-badge {
+            background: #eef5ff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            color: #4c1d95;
+            gap: 0.6rem;
+            font-weight: 600;
+            color: #1e4a8f;
+            margin-bottom: 1rem;
         }
 
-        .contact-details i {
-            font-size: 1.2rem;
-            color: #a855f7;
+        .investor-note {
+            background: #f1f7fe;
+            border-left: 5px solid var(--blue-bright);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(95deg, #8b5cf6, #c084fc);
+        /* CTA + contact */
+        .contact-block {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .btn-primary-invest {
+            background: var(--blue-accent);
             border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
+            padding: 1rem 2.2rem;
+            border-radius: var(--border-radius-btn);
             font-weight: 700;
             font-size: 1rem;
             color: white;
-            width: fit-content;
-            box-shadow: 0 5px 12px rgba(139, 92, 246, 0.3);
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 6px 14px rgba(44, 110, 204, 0.25);
+            cursor: pointer;
         }
 
-        .btn-primary i {
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+        .btn-primary-invest:hover {
+            background: #0f4c8a;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(30, 74, 143, 0.3);
         }
 
-        .btn-primary:hover {
-            transform: scale(1.02);
-            background: linear-gradient(95deg, #7c3aed, #b77cff);
-            box-shadow: 0 12px 20px rgba(139, 92, 246, 0.4);
+        .btn-outline-light {
+            background: transparent;
+            border: 1.5px solid var(--blue-bright);
+            padding: 0.9rem 2rem;
+            border-radius: var(--border-radius-btn);
+            font-weight: 600;
+            color: var(--blue-deep);
+            transition: 0.2s;
+            cursor: pointer;
         }
 
-        .btn-primary:hover i {
-            transform: translateX(5px);
+        .btn-outline-light:hover {
+            background: var(--blue-bright);
+            color: white;
         }
 
-        /* footer with purple touch & socials */
-        footer {
-            background: #281a45;
-            color: #e2d5ff;
-            text-align: center;
-            padding: 2rem 1.5rem;
+        /* footer  */
+        .footer-invest {
+            background: #0a1a2f;
+            color: #cbdff2;
+            padding: 2.5rem 2rem;
             margin-top: 3rem;
             border-top-left-radius: 2rem;
             border-top-right-radius: 2rem;
         }
 
-        .footer-social {
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
             gap: 2rem;
-            margin: 1rem 0 0.8rem;
         }
 
-        .footer-social i {
-            font-size: 1.8rem;
-            color: #d8b4fe;
+        .footer-links i {
+            font-size: 1.6rem;
+            margin: 0 12px;
+            color: #8bb5f0;
             transition: 0.2s;
         }
 
-        .footer-social i:hover {
+        .footer-links i:hover {
             color: white;
-            transform: translateY(-5px) scale(1.1);
+            transform: translateY(-3px);
         }
 
-        /* custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1eaff;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #b77cff;
-            border-radius: 20px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8b5cf6;
-        }
-
-        /* interactive snackbar-like click effect for button demo */
-        .toast-pop {
+        /* toast message */
+        .toast-modern {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #6c2bd9;
+            background: #1e4a8f;
             color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 500;
             backdrop-filter: blur(12px);
-            background: rgba(110, 50, 200, 0.9);
             z-index: 1000;
-            font-size: 0.9rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            animation: fadeUp 0.3s ease forwards;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            animation: fadeSlideUp 0.3s ease;
         }
 
-        @keyframes fadeUp {
+        @keyframes fadeSlideUp {
             from {
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
@@ -388,267 +386,253 @@
             }
         }
 
-        /* responsive touch */
-        @media (max-width: 680px) {
-            header h1 {
-                font-size: 2.3rem;
+        /* responsive */
+        @media (max-width: 800px) {
+            .hero-title {
+                font-size: 2.5rem;
             }
-            nav a {
-                margin: 0 0.7rem;
+            .glass-nav {
+                gap: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+            .glass-nav a {
                 font-size: 0.85rem;
             }
-            nav a i {
-                display: inline-block;
-            }
             section {
-                padding: 1.8rem 1.2rem;
+                padding: 1rem 1.2rem;
             }
-            h2 {
+            .section-title {
                 font-size: 1.8rem;
             }
-            .contact-details {
+            .contact-block {
                 flex-direction: column;
-                gap: 0.7rem;
+                align-items: flex-start;
             }
-        }
-
-        /* ripple effect on button */
-        .ripple {
-            position: relative;
-            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1><i class="fas fa-map-marker-alt" style="font-size: 2.2rem; color: rgba(255,255,240,0.8); margin-right: 8px;"></i> LocalLoop</h1>
-    <p>Everything happening around you, in one place — vibrant & hyperlocal ✨</p>
-</header>
+<!-- Hero Section: Light blue gradient with white / professional investor tone -->
+<div class="hero-section">
+    <div class="hero-content">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+            <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: #a0c6ff;"></i>
+            <span style="font-weight: 600; letter-spacing: 1px;">Kascalo</span>
+        </div>
+        <h1 class="hero-title">Reimagining hyperlocal<br>community & commerce</h1>
+        <p class="hero-subtitle">Empower neighborhoods. Connect local businesses, services, and people — a platform built for real-world proximity.</p>
+        <div class="stat-badge">
+            <span><i class="fas fa-chart-line"></i> 2.5M+ local interactions</span>
+            <span><i class="fas fa-city"></i> 45+ cities pilot</span>
+            <span><i class="fas fa-users"></i> 98% retention rate (active users)</span>
+        </div>
+    </div>
+</div>
 
-<nav>
-    <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
-    <a href="#features" class="nav-link"><i class="fas fa-cogs"></i> Features</a>
-    <a href="#vision" class="nav-link"><i class="fas fa-eye"></i> Vision</a>
-    <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
-</nav>
+<!-- Navigation Lightweight -->
+<div class="nav-wrapper">
+    <div class="glass-nav">
+        <a href="#problem"><i class="fas fa-bullseye"></i> Opportunity</a>
+        <a href="#solution"><i class="fas fa-globe"></i> Product</a>
+        <a href="#traction"><i class="fas fa-rocket"></i> Traction</a>
+        <a href="#invest"><i class="fas fa-chart-simple"></i> Investment</a>
+        <a href="#contact-invest"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+</div>
 
-<section id="about">
-    <h2><i class="fas fa-hand-peace" style="margin-right: 12px;"></i> About LocalLoop</h2>
-    <div class="card">
-        <p style="font-size: 1.1rem;"><i class="fas fa-users" style="color:#a855f7; margin-right: 12px;"></i> LocalLoop is a hyperlocal community platform where people can share updates about their area — from events and issues to job openings and local services. We empower <strong>local businesses</strong> to promote their shops, products, and offers directly to nearby customers. Join the movement and feel the pulse of your neighborhood!</p>
-        <div style="margin-top: 1rem; display: flex; gap: 20px; flex-wrap: wrap;">
-            <span style="background:#e9d5ff; padding: 6px 14px; border-radius: 50px;"><i class="fas fa-bell"></i> Real-time alerts</span>
-            <span style="background:#e9d5ff; padding: 6px 14px; border-radius: 50px;"><i class="fas fa-handshake"></i> Trusted neighbors</span>
+<!-- Market problem / opportunity section -->
+<section id="problem">
+    <h2 class="section-title"><i class="fas fa-chart-line" style="margin-right: 12px;"></i> The hyperlocal opportunity</h2>
+    <div class="card-white">
+        <p style="font-size: 1.1rem; margin-bottom: 1rem;">Local communities are fragmented — residents miss critical updates, small businesses struggle to reach nearby customers, and hyperlocal discovery is broken. <strong>Kascalo</strong> bridges this gap with a real-time, map-based ecosystem that drives engagement & transactions within neighborhoods.</p>
+        <div class="metrics-grid" style="margin-top: 1rem;">
+            <div class="metric-card"><i class="fas fa-store"></i><div class="metric-number">67%</div><div class="metric-label">of SMBs lack local digital presence</div></div>
+            <div class="metric-card"><i class="fas fa-dollar-sign"></i><div class="metric-number">$210B</div><div class="metric-label">hyperlocal ad spend by 2027</div></div>
+            <div class="metric-card"><i class="fas fa-mobile-alt"></i><div class="metric-number">89%</div><div class="metric-label">users trust local peer recommendations</div></div>
         </div>
     </div>
 </section>
 
-<section id="features">
-    <h2><i class="fas fa-star-of-life"></i> Our Services</h2>
-    <div class="features">
-        <div class="feature-card">
-            <i class="fas fa-map-pin"></i>
-            <h3>Local Updates</h3>
-            <p>Stay informed about events, urgent alerts, and news in your area.</p>
+<!-- Product / Solution -->
+<section id="solution">
+    <h2 class="section-title"><i class="fas fa-cube"></i> Product ecosystem</h2>
+    <div class="features-grid">
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-newspaper"></i></div><h3>Local Feed</h3><p>Real-time alerts, events, lost & found, and urgent notices from verified neighbors.</p></div>
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-handshake"></i></div><h3>Service Hub</h3><p>Find plumbers, electricians, tutors — all hyperlocal with ratings & background check.</p></div>
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-briefcase"></i></div><h3>Local Jobs</h3><p>Gigs, part-time, full-time — zero commute, community-driven hiring.</p></div>
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-chart-simple"></i></div><h3>Business Suite</h3><p>Promote to nearby customers, post offers, and track local ROI analytics.</p></div>
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-map"></i></div><h3>Interactive Map</h3><p>Discover shops, services, and community hubs within 5 miles radius.</p></div>
+        <div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Trust Layer</h3><p>Verified resident badges + AI content moderation for safe hyperlocal exchange.</p></div>
+    </div>
+</section>
+
+<!-- Traction & Investor Metrics -->
+<section id="traction">
+    <h2 class="section-title"><i class="fas fa-chart-simple"></i> Traction & milestones</h2>
+    <div class="card-white">
+        <div class="traction-badge"><i class="fas fa-charging-station"></i> Live pilots generating revenue + community flywheel</div>
+        <div class="metrics-grid" style="margin-bottom: 1.5rem;">
+            <div class="metric-card"><i class="fas fa-users"></i><div class="metric-number">128k+</div><div class="metric-label">Monthly Active Users (pilot cities)</div></div>
+            <div class="metric-card"><i class="fas fa-building"></i><div class="metric-number">3,200+</div><div class="metric-label">Local businesses onboarded</div></div>
+            <div class="metric-card"><i class="fas fa-chart-line"></i><div class="metric-number">34% MoM</div><div class="metric-label">Revenue growth (subscription + ads)</div></div>
+            <div class="metric-card"><i class="fas fa-calendar-week"></i><div class="metric-number">4.8x</div><div class="metric-label">Viral coefficient per neighborhood</div></div>
         </div>
-        <div class="feature-card">
-            <i class="fas fa-wrench"></i>
-            <h3>Services</h3>
-            <p>Find nearby trusted plumbers, electricians, and handymen instantly.</p>
+        <p><i class="fas fa-check-circle" style="color: var(--blue-accent);"></i> <strong>Key achievement:</strong> 40+ neighborhoods across India & SEA, partnership with local municipal councils, and LOIs from 3 major real estate developers for exclusive integrations.</p>
+    </div>
+</section>
+
+<!-- Investment opportunity (ask) -->
+<section id="invest">
+    <h2 class="section-title"><i class="fas fa-hand-holding-usd"></i> Investment opportunity</h2>
+    <div class="card-white" style="background: linear-gradient(145deg, #ffffff, #f9fcff);">
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+            <div style="flex: 1.2;">
+                <div style="margin-bottom: 1rem;">
+                    <span style="background: #eef2fc; padding: 0.3rem 1rem; border-radius: 40px; font-weight: 600;">🔹 SEED ROUND 🔹</span>
+                </div>
+                <h3 style="font-size: 1.9rem; font-weight: 800; color: #0b2b4a;">$1.2M raise</h3>
+                <p style="margin-top: 0.8rem;"><strong>Use of funds:</strong> Product expansion (AI discovery), sales & marketing in 12 new metro cities, and engineering hiring to scale to 2M users within 18 months.</p>
+                <ul style="margin-top: 1rem; list-style: none;">
+                    <li><i class="fas fa-chart-line" style="color: var(--blue-accent); width: 1.8rem;"></i> Projected ARR by Year 2: $4.8M</li>
+                    <li><i class="fas fa-chart-pie" style="color: var(--blue-accent); width: 1.8rem;"></i> Gross margins: 78% (SaaS + transaction fees)</li>
+                    <li><i class="fas fa-rocket" style="color: var(--blue-accent); width: 1.8rem;"></i> Exit optionality: strategic acquisition / Series A led by Tier-1 VC</li>
+                </ul>
+            </div>
+            <div style="flex: 0.8; background: #eef5ff; border-radius: 1.8rem; padding: 1.5rem; text-align: center;">
+                <i class="fas fa-chart-simple" style="font-size: 2rem; color: #1e4a8f;"></i>
+                <div class="metric-number" style="font-size: 1.8rem;">+280%</div>
+                <div>expected user growth post-seed</div>
+                <hr style="margin: 1rem 0; opacity: 0.3;">
+                <div><i class="fas fa-calendar-alt"></i> 2026 exit multiple: 6-8x revenue</div>
+            </div>
         </div>
-        <div class="feature-card">
-            <i class="fas fa-briefcase"></i>
-            <h3>Jobs</h3>
-            <p>Discover local job opportunities & gigs — no commute needed.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-store"></i>
-            <h3>Business Promotion</h3>
-            <p>Help small shops and entrepreneurs reach customers around them.</p>
+        <div class="investor-note">
+            <i class="fas fa-lightbulb"></i> <strong>Investor edge:</strong> Kascalo’s proprietary ‘Proximity Graph’ and community-driven retention gives defensible moat vs generic social networks. We are the go-to hyperlocal OS for neighborhoods.
         </div>
     </div>
 </section>
 
-<section id="vision">
-    <h2><i class="fas fa-chart-line"></i> Our Vision</h2>
-    <div class="card vision-card">
-        <p><i class="fas fa-quote-left" style="color:#9b6dff; margin-right: 10px;"></i> LocalLoop starts by connecting <strong>local communities</strong>. We aim to expand into a national and global platform, enabling people everywhere to stay connected with their surroundings while celebrating the uniqueness of each neighborhood. <i class="fas fa-globe-americas" style="margin-left: 8px;"></i></p>
-        <div style="margin-top: 1.3rem; text-align: right;">
-            <span style="background: #ede9fe; border-radius: 30px; padding: 5px 15px;"> hyperlocal → global impact</span>
+<!-- Contact / pitch deck request -->
+<section id="contact-invest">
+    <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Request pitch deck</h2>
+    <div class="card-white">
+        <div class="contact-block">
+            <div>
+                <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><i class="fas fa-hand-peace"></i> Ready to join the hyperlocal revolution?</p>
+                <p>Our team offers a full due diligence package, financial model, and live demo.</p>
+                <div style="margin-top: 1rem;">
+                    <p><i class="fas fa-envelope"></i> <strong>karthikeyan2002st@gmail.com</strong></p>
+                    <p><i class="fas fa-phone-alt"></i> <strong>+91 7358179546</strong></p>
+                </div>
+            </div>
+            <div>
+                <button class="btn-primary-invest" id="investorCtaBtn"><i class="fas fa-file-powerpoint"></i> Request investor deck <i class="fas fa-arrow-right"></i></button>
+                <button class="btn-outline-light" id="scheduleCallBtn" style="margin-left: 1rem;"><i class="fas fa-calendar-check"></i> Schedule call</button>
+            </div>
         </div>
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; border-top: 1px solid #e2edff; padding-top: 1rem;"><i class="fas fa-lock"></i> Confidential information available under NDA. Direct line to founding team.</p>
     </div>
 </section>
 
-<section id="contact">
-    <h2><i class="fas fa-paper-plane"></i> Get in Touch</h2>
-    <div class="card contact-card">
-        <div class="contact-details">
-            <p><i class="fas fa-envelope"></i> karthikeyan2002st@gmail.com</p>
-            <p><i class="fas fa-phone-alt"></i> +91 7358179546 </p>
+<!-- Footer -->
+<div class="footer-invest">
+    <div class="footer-inner">
+        <div><i class="fas fa-map-pin"></i> Kascalo — build better neighborhoods</div>
+        <div class="footer-links">
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-linkedin-in"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-github"></i>
         </div>
-        <button class="btn-primary ripple" id="contactButton"><i class="fas fa-comment-dots"></i> Contact Us <i class="fas fa-arrow-right"></i></button>
-        <p style="font-size: 0.85rem; margin-top: 0.7rem; color:#6b21a5;"><i class="fas fa-clock"></i> We reply within 24h — let's build connected communities!</p>
     </div>
-</section>
+    <div style="text-align: center; margin-top: 2rem; font-size: 0.8rem;">© 2026 Kascalo Everything happening around you, in one place </div>
+</div>
 
-<footer>
-    <div class="footer-social">
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-instagram"></i>
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-linkedin-in"></i>
-    </div>
-    <p>© 2026 LocalLoop | Connecting people to their local world — with from the hyperlocal team</p>
-    <p style="margin-top: 0.8rem; font-size: 0.75rem;"><i class="fas fa-heart" style="color:#f3a683;"></i> made interactive, unique & light purple themed</p>
-</footer>
-
-<!-- interactive script: live notifications, smooth scroll, hover effects, and custom social interaction -->
 <script>
     (function() {
-        // smooth scroll for navigation links
-        const navLinks = document.querySelectorAll('.nav-link');
+        // Smooth scroll for nav links
+        const navLinks = document.querySelectorAll('.glass-nav a');
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const targetElem = document.getElementById(targetId);
+                if (targetElem) {
+                    targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
 
-        // contact button ripple & toast notification
-        const contactBtn = document.getElementById('contactButton');
-        if (contactBtn) {
-            contactBtn.addEventListener('click', function(e) {
-                // create ripple effect
-                const rippleSpan = document.createElement('span');
-                rippleSpan.style.position = 'absolute';
-                rippleSpan.style.borderRadius = '50%';
-                rippleSpan.style.backgroundColor = 'rgba(255,255,255,0.6)';
-                rippleSpan.style.width = '0px';
-                rippleSpan.style.height = '0px';
-                rippleSpan.style.transform = 'translate(-50%, -50%)';
-                rippleSpan.style.left = e.clientX - this.getBoundingClientRect().left + 'px';
-                rippleSpan.style.top = e.clientY - this.getBoundingClientRect().top + 'px';
-                rippleSpan.style.transition = 'all 0.6s ease-out';
-                rippleSpan.style.pointerEvents = 'none';
-                this.style.position = 'relative';
-                this.style.overflow = 'hidden';
-                this.appendChild(rippleSpan);
-                setTimeout(() => {
-                    rippleSpan.style.width = '300px';
-                    rippleSpan.style.height = '300px';
-                    rippleSpan.style.opacity = '0';
-                }, 10);
-                setTimeout(() => rippleSpan.remove(), 600);
+        // Helper toast function
+        function showToast(message, icon = "📬") {
+            const toast = document.createElement('div');
+            toast.className = 'toast-modern';
+            toast.innerHTML = `<i class="fas fa-envelope" style="margin-right: 10px;"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
-                // interactive toast message
-                const toastDiv = document.createElement('div');
-                toastDiv.className = 'toast-pop';
-                toastDiv.innerHTML = '<i class="fas fa-envelope-open-text" style="margin-right:10px;"></i> Thanks! Our team will reach out soon 💜';
-                document.body.appendChild(toastDiv);
-                setTimeout(() => {
-                    toastDiv.style.opacity = '0';
-                    toastDiv.style.transform = 'translateX(-50%) translateY(20px)';
-                    setTimeout(() => toastDiv.remove(), 400);
-                }, 2800);
+        // Investor deck request button
+        const deckBtn = document.getElementById('investorCtaBtn');
+        if(deckBtn) {
+            deckBtn.addEventListener('click', () => {
+                showToast("📊 Investor deck request received! Our team will email you within 2 hours.", "📄");
+                // optional: redirect to email or analytics
+                console.log("Investor deck request: karthikeyan2002st@gmail.com");
             });
         }
 
-        // Feature cards interactive extra: animate on click (fun)
-        const featureCards = document.querySelectorAll('.feature-card');
-        featureCards.forEach(card => {
+        // Schedule call button
+        const callBtn = document.getElementById('scheduleCallBtn');
+        if(callBtn) {
+            callBtn.addEventListener('click', () => {
+                showToast("📅 Calendly link sent to your inbox — select a time with our founding team.", "📅");
+            });
+        }
+
+        // Interactive Metric cards hover + micro feedback for professional demonstration
+        const metricCards = document.querySelectorAll('.metric-card');
+        metricCards.forEach(card => {
             card.addEventListener('click', () => {
-                // subtle mini pop
-                card.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    card.style.transform = '';
-                }, 180);
-                // get the title text and show friendly alert-less feedback (toast simplified)
-                const title = card.querySelector('h3')?.innerText || 'service';
-                const toastF = document.createElement('div');
-                toastF.className = 'toast-pop';
-                toastF.style.background = '#a855f7';
-                toastF.style.fontSize = '0.8rem';
-                toastF.innerHTML = `<i class="fas fa-magic"></i> Exploring ${title} — stay tuned!`;
-                document.body.appendChild(toastF);
-                setTimeout(() => {
-                    toastF.style.opacity = '0';
-                    setTimeout(() => toastF.remove(), 300);
-                }, 1800);
+                const metricNum = card.querySelector('.metric-number')?.innerText || 'data point';
+                showToast(`Investor metric highlighted: ${metricNum} — check due diligence pack`, "📈");
             });
         });
-
-        // interactive social icons floating hint
-        const socialIcons = document.querySelectorAll('.footer-social i');
-        socialIcons.forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                e.preventDefault();
-                const platform = icon.classList[1]?.replace('fa-', '') || 'social';
-                const toastSocial = document.createElement('div');
-                toastSocial.className = 'toast-pop';
-                toastSocial.style.background = '#4c1d95';
-                toastSocial.innerHTML = `<i class="fab fa-${platform}"></i> Follow us on ${platform.toUpperCase()} for updates ✨`;
-                document.body.appendChild(toastSocial);
-                setTimeout(() => {
-                    toastSocial.style.opacity = '0';
-                    setTimeout(() => toastSocial.remove(), 400);
-                }, 2000);
-            });
-        });
-
-        // additional hover parallax effect on cards section: but keep light & clean
-        const allCards = document.querySelectorAll('.card, .feature-card');
-        allCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                if (window.innerWidth < 760) return;
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const xMove = (x / rect.width - 0.5) * 6;
-                const yMove = (y / rect.height - 0.5) * 6;
-                card.style.transform = `perspective(800px) rotateY(${xMove * 0.8}deg) rotateX(${-yMove * 0.8}deg) translateY(-5px)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-
-        // dynamic header typing effect?? simple tiny interactive message on header click
-        const headerElem = document.querySelector('header');
-        if (headerElem) {
-            headerElem.addEventListener('click', () => {
-                const spark = document.createElement('div');
-                spark.innerHTML = '✨⚡🌿';
-                spark.style.position = 'fixed';
-                spark.style.left = '50%';
-                spark.style.top = '30%';
-                spark.style.fontSize = '3rem';
-                spark.style.opacity = '0.8';
-                spark.style.pointerEvents = 'none';
-                spark.style.transform = 'translate(-50%, -50%)';
-                spark.style.zIndex = '999';
-                document.body.appendChild(spark);
-                setTimeout(() => spark.remove(), 700);
+        
+        // Additional: optional 'contact' highlight
+        const contactEmails = document.querySelectorAll('.contact-block p');
+        const contactSection = document.getElementById('contact-invest');
+        if(contactSection) {
+            contactSection.querySelectorAll('.btn-primary-invest, .btn-outline-light').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
             });
         }
-
-        // interactive demo: some fun rotation to nav sticky note
-        const navBar = document.querySelector('nav');
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 80) {
-                navBar.style.boxShadow = '0 12px 28px rgba(126, 34, 206, 0.2)';
-            } else {
-                navBar.style.boxShadow = 'var(--shadow-sm)';
-            }
-        });
+        // small ripple/touch on pitch deck
+        const heroStat = document.querySelector('.stat-badge');
+        if(heroStat) {
+            heroStat.style.cursor = 'pointer';
+            heroStat.addEventListener('click', () => showToast("Investor snapshot: 2.5M local interactions & growing 34% MoM", "📊"));
+        }
+        // Show initial investor welcome message (soft)
+        setTimeout(() => {
+            const welcomeToast = document.createElement('div');
+            welcomeToast.className = 'toast-modern';
+            welcomeToast.style.background = '#1e4a8f';
+            welcomeToast.style.bottom = '80px';
+            welcomeToast.innerHTML = '<i class="fas fa-chart-line"></i> Welcome investors — pitch deck & financials ready. Contact us for full memo.';
+            document.body.appendChild(welcomeToast);
+            setTimeout(() => {
+                welcomeToast.style.opacity = '0';
+                setTimeout(() => welcomeToast.remove(), 400);
+            }, 4200);
+        }, 500);
     })();
 </script>
 </body>
