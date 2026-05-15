@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f4f8ff;
+            padding:30px;
+        }
+
+        .event-container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .event-card{
+            background:white;
+            border-radius:20px;
+            overflow:hidden;
+            margin-bottom:30px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .event-image{
+            width:100%;
+            height:350px;
+            object-fit:cover;
+        }
+
+        .event-content{
+            padding:25px;
+        }
+
+        .event-title{
+            font-size:32px;
+            font-weight:bold;
+            color:#2563eb;
+        }
+
+        .event-place{
+            margin-top:10px;
+            color:#475569;
+        }
+
+        .event-meta{
+            margin-top:15px;
+            display:flex;
+            flex-wrap:wrap;
+            gap:15px;
+        }
+
+        .meta-box{
+            background:#e0edff;
+            padding:10px 16px;
+            border-radius:30px;
+            color:#2563eb;
+            font-weight:bold;
+        }
+
+        .event-about{
+            margin-top:20px;
+            line-height:1.7;
+            color:#334155;
+        }
+
+        .ticket-box{
+            margin-top:25px;
+            padding:20px;
+            background:#f8fbff;
+            border-radius:16px;
+        }
+
+        .ticket-title{
+            font-size:20px;
+            font-weight:bold;
+            margin-bottom:15px;
+            color:#2563eb;
+        }
+
+        .map-btn{
+            display:inline-block;
+            margin-top:15px;
+            background:#2563eb;
+            color:white;
+            padding:12px 20px;
+            border-radius:12px;
+            text-decoration:none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="event-container">
+
+    {% for event in events %}
+
+    <div class="event-card">
+
+        <img src="{{ url_for('static', filename='uploads/' + event.image) }}"
+             class="event-image">
+
+        <div class="event-content">
+
+            <div class="event-title">
+                {{ event.event_title }}
+            </div>
+
+            <div class="event-place">
+                📍 {{ event.place }}
+            </div>
+
+            <div class="event-meta">
+
+                <div class="meta-box">
+                    📅 {{ event.event_date }}
+                </div>
+
+                <div class="meta-box">
+                    🗓 {{ event.event_day }}
+                </div>
+
+                <div class="meta-box">
+                    ⏰ {{ event.event_time }}
+                </div>
+
+                <div class="meta-box">
+                    ⌛ {{ event.duration }}
+                </div>
+
+                <div class="meta-box">
+                    👥 {{ event.total_seats }} Seats
+                </div>
+
+            </div>
+
+            <div class="event-about">
+                {{ event.about_event }}
+            </div>
+
+            <div class="ticket-box">
+
+                <div class="ticket-title">
+                    Ticket Information
+                </div>
+
+                <p>
+                    Type:
+                    <b>{{ event.ticket_type }}</b>
+                </p>
+
+                {% if event.ticket_type == 'Paid' %}
+
+                <p>
+                    Price:
+                    <b>₹ {{ event.ticket_price }}</b>
+                </p>
+
+                {% else %}
+
+                <p>
+                    Entry Free
+                </p>
+
+                {% endif %}
+
+            </div>
+
+            <a href="{{ event.map_link }}"
+               target="_blank"
+               class="map-btn">
+
+               Open Google Map
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

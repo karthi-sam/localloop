@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Kascalo - Business & Shop Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f8ff;
+            color: #1a2c3e;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Arial', sans-serif;
+            line-height: 1.5;
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d9eaff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6cb2eb;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4299e1;
+        }
+
+        /* header */
+        header {
+            background: linear-gradient(135deg, #ffffff 0%, #e1f0fa 100%);
+            padding: 1.6rem 1rem;
+            text-align: center;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #1e4a76;
+            border-bottom: 2px solid #90cdf4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            text-transform: uppercase;
+        }
+
+        /* form card */
+        .form-box {
+            width: 92%;
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 32px;
+            border: 1px solid #cee6ff;
+            box-shadow: 0 20px 35px -12px rgba(0, 30, 60, 0.08);
+            transition: all 0.2s;
+        }
+
+        .form-box:hover {
+            box-shadow: 0 25px 40px -12px rgba(0, 30, 60, 0.12);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1f5a86;
+            font-size: 0.85rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #fbfeff;
+            border: 1px solid #bdd9f0;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #1c405e;
+            transition: 0.2s;
+            outline: none;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #5ba8e0;
+            box-shadow: 0 0 0 3px rgba(91, 168, 224, 0.2);
+            background: white;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234284b5" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        /* file upload */
+        .custum-file-upload {
+            height: 170px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #7db9e8;
+            background: #f5fcff;
+            border-radius: 28px;
+            margin: 20px 0;
+            transition: 0.2s;
+        }
+
+        .custum-file-upload:hover {
+            background: #eef5fc;
+            border-color: #4299e1;
+        }
+
+        .custum-file-upload .icon svg {
+            height: 52px;
+            fill: #599fd9;
+        }
+
+        .custum-file-upload .text span {
+            color: #2c6a9e;
+            font-size: 0.85rem;
+            background: #eaf4fc;
+            padding: 5px 14px;
+            border-radius: 40px;
+        }
+
+        .custum-file-upload input {
+            display: none;
+        }
+
+        /* submit button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(105deg, #6bb5ee, #3c8bcb);
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            border-radius: 44px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(105deg, #5ba8e0, #2e7bb5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(60, 139, 203, 0.3);
+        }
+
+        /* field sections */
+        .fields-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .fields-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f5a86;
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e1f0fa;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 0.75rem;
+            color: #6495b9;
+            border-top: 1px solid #d7e9ff;
+            margin-top: 20px;
+            background: #ffffffcc;
+        }
+
+        @media (max-width: 640px) {
+            .form-box {
+                padding: 1.5rem;
+                margin: 20px auto;
+            }
+            header {
+                font-size: 1.4rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Kascalo
+</header>
+
+<!-- POST FORM -->
+<div class="form-box">
+   <form method="POST" enctype="multipart/form-data" action="/services">
+
+        <!-- USER TYPE SELECTION -->
+        <div class="form-group">
+            <label>📌 Select Category</label>
+            <select name="category" id="category" onchange="showFields()" required>
+                <option value="" disabled selected>-- Select an option --</option>
+                <option value="business_service">Business / Service</option>
+                <option value="shop">Shop</option>
+            </select>
+        </div>
+
+        <!-- ================= BUSINESS / SERVICE FIELDS ================= -->
+        <div id="businessFields" class="fields-section">
+            <div class="section-title">Business / Service Details</div>
+
+            <div class="form-group">
+                <label>Business Type</label>
+                <select name="business_mode">
+                    <option value="">Select type</option>
+                    <option value="individual">Individual</option>
+                    <option value="group">Group / Company</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Company / Service Name</label>
+                <input type="text" name="company_name" placeholder="Enter your company or service name">
+            </div>
+
+            <div class="form-group">
+                <label>Service Type</label>
+                <input type="text" name="service_type" placeholder="e.g., Electrician, Plumber, Designer, Catering">
+            </div>
+
+            <div class="form-group">
+                <label>Google Map Link</label>
+                <input type="url" name="map_link" placeholder="https://maps.google.com/...">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="Contact number">
+            </div>
+
+            <div class="form-group">
+                <label>Service Description</label>
+                <textarea name="service_description" placeholder="Describe your services, experience, and offerings..."></textarea>
+            </div>
+        </div>
+
+        <!-- ================= SHOP FIELDS ================= -->
+        <div id="shopFields" class="fields-section">
+            <div class="section-title">Shop Details</div>
+
+            <div class="form-group">
+                <label>Shop Name</label>
+                <input type="text" name="shop_name" placeholder="Enter your shop name">
+            </div>
+
+            <div class="form-group">
+                <label>Shop Type</label>
+                <input type="text" name="shop_type" placeholder="e.g., Tea Shop, Grocery, Mobile Store, Bakery">
+            </div>
+
+            <div class="form-group">
+                <label>Google Map Link</label>
+                <input type="url" name="shop_map_link" placeholder="https://maps.google.com/...">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="Contact number">
+            </div>
+
+            <div class="form-group">
+                <label>About Your Shop</label>
+                <textarea name="shop_description" placeholder="Describe your shop, products, and services..."></textarea>
+            </div>
+        </div>
+
+        <!-- IMAGE UPLOAD -->
+        <div class="form-group">
+            <label>Upload Image</label>
+            <label class="custum-file-upload" for="file">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                    </svg>
+                </div>
+                <div class="text">
+                    <span id="fileText">Click to upload image (PNG/JPG)</span>
+                </div>
+                <input type="file" id="file" name="image" accept="image/png, image/jpeg" onchange="showFileName(this)">
+            </label>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Listing</button>
+    </form>
+</div>
+
+<footer>
+    LocalLoop · Connect with local businesses and shops
+</footer>
+
+<script>
+    // Show/hide form fields based on category selection
+    function showFields() {
+        const category = document.getElementById("category").value;
+
+        // Get all field sections
+        const businessFields = document.getElementById("businessFields");
+        const shopFields = document.getElementById("shopFields");
+
+        // Hide all sections first
+        businessFields.classList.remove("active");
+        shopFields.classList.remove("active");
+
+        // Show the selected section
+        if (category === "business_service") {
+            businessFields.classList.add("active");
+        } else if (category === "shop") {
+            shopFields.classList.add("active");
+        }
+    }
+
+    // Display selected filename
+    function showFileName(input) {
+        const textSpan = document.getElementById("fileText");
+        if (input.files && input.files.length > 0) {
+            const fileName = input.files[0].name;
+            if (fileName.length > 30) {
+                textSpan.innerHTML = fileName.substring(0, 27) + '…';
+            } else {
+                textSpan.innerHTML = fileName;
+            }
+            // Visual feedback
+            const uploadBox = document.querySelector('.custum-file-upload');
+            uploadBox.style.borderColor = "#4299e1";
+            uploadBox.style.background = "#f0f9ff";
+            setTimeout(() => {
+                uploadBox.style.borderColor = "#7db9e8";
+            }, 500);
+        } else {
+            textSpan.innerHTML = "Click to upload image (PNG/JPG)";
+        }
+    }
+
+    // Initialize - hide all fields on page load
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ensure all fields are hidden initially
+        document.getElementById("businessFields").classList.remove("active");
+        document.getElementById("shopFields").classList.remove("active");
+
+        // Set default selection to empty
+        const categorySelect = document.getElementById("category");
+        if (categorySelect) {
+            categorySelect.value = "";
+        }
+    });
+
+    // Add animation to form card on hover
+    const formBox = document.querySelector('.form-box');
+    if (formBox) {
+        formBox.addEventListener('mouseenter', () => {
+            formBox.style.transform = 'translateY(-2px)';
+        });
+        formBox.addEventListener('mouseleave', () => {
+            formBox.style.transform = 'translateY(0)';
+        });
+    }
+</script>
+
+</body>
+</html>

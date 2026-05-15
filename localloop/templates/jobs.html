@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LocalLoop Jobs</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f9ff;
+    color:#1d3557;
+}
+
+/* HEADER */
+
+.header{
+    background:white;
+    padding:18px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    color:#2b6cb0;
+    border-bottom:2px solid #d6eaff;
+}
+
+/* FORM */
+
+.job-form{
+    width:95%;
+    max-width:700px;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+.job-form h2{
+    margin-bottom:20px;
+    color:#2563eb;
+}
+
+.job-form input,
+.job-form textarea,
+.job-form select{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #cbdff8;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+}
+
+.job-form textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.job-form button{
+    width:100%;
+    margin-top:18px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#60a5fa,#2563eb);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.job-form button:hover{
+    opacity:0.9;
+}
+
+/* JOB CARDS */
+
+.jobs-container{
+    width:95%;
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    gap:20px;
+    padding-bottom:40px;
+}
+
+.job-card{
+    background:white;
+    border-radius:22px;
+    padding:22px;
+    border:1px solid #d9eaff;
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
+    transition:0.2s;
+}
+
+.job-card:hover{
+    transform:translateY(-4px);
+}
+
+.job-title{
+    font-size:24px;
+    font-weight:bold;
+    color:#1d4ed8;
+}
+
+.company{
+    font-size:18px;
+    margin-top:6px;
+    color:#374151;
+    font-weight:bold;
+}
+
+.recruiter{
+    margin-top:8px;
+    color:#64748b;
+    font-size:14px;
+}
+
+.badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
+
+.badge{
+    background:#e0efff;
+    color:#2563eb;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.description{
+    margin-top:18px;
+    line-height:1.6;
+    color:#374151;
+}
+
+.section{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid #edf4ff;
+}
+
+.section-title{
+    font-weight:bold;
+    margin-bottom:10px;
+    color:#2563eb;
+}
+
+.meta{
+    margin-top:8px;
+    font-size:14px;
+    color:#475569;
+}
+
+.actions{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.apply-btn,
+.interest-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.apply-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.interest-btn{
+    background:#e0efff;
+    color:#2563eb;
+}
+
+.stats{
+    display:flex;
+    gap:18px;
+    margin-top:18px;
+    flex-wrap:wrap;
+}
+
+.stat-box{
+    flex:1;
+    min-width:120px;
+    background:#f8fbff;
+    padding:12px;
+    border-radius:14px;
+    text-align:center;
+}
+
+.stat-number{
+    font-size:20px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+.stat-label{
+    font-size:13px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+@media(max-width:600px){
+
+    .job-title{
+        font-size:20px;
+    }
+
+    .company{
+        font-size:16px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    Kascalo Jobs
+</div>
+
+<!-- JOB FORM -->
+
+<div class="job-form">
+
+    <h2>Post New Job</h2>
+
+    <form method="POST">
+
+        <input type="text"
+               name="organization_name"
+               placeholder="Organization / Company Name"
+               required>
+
+        <input type="text"
+               name="recruiter_name"
+               placeholder="Recruiter Name"
+               required>
+
+        <input type="text"
+               name="job_title"
+               placeholder="Position Opening"
+               required>
+
+        <select name="experience" required>
+            <option value="">Select Experience</option>
+            <option value="Fresher">Fresher</option>
+            <option value="0-1 Years">0-1 Years</option>
+            <option value="1-2 Years">1-2 Years</option>
+            <option value="2-4 Years">2-4 Years</option>
+            <option value="5+ Years">5+ Years</option>
+        </select>
+
+        <select name="employment_type">
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Internship">Internship</option>
+            <option value="Contract">Contract</option>
+        </select>
+
+        <textarea name="job_description"
+                  placeholder="Job Description..."
+                  required></textarea>
+
+        <select name="hiring_type"
+                id="hiringType"
+                onchange="toggleHiringType()">
+
+            <option value="walkin">Walk-In</option>
+            <option value="apply">Apply Link</option>
+
+        </select>
+
+        <!-- WALKIN -->
+
+        <div id="walkinFields">
+
+            <input type="date"
+                   name="walkin_date">
+
+            <input type="time"
+                   name="walkin_start">
+
+            <input type="time"
+                   name="walkin_end">
+
+            <input type="text"
+                   name="walkin_location"
+                   placeholder="Walk-In Location">
+
+        </div>
+
+        <!-- APPLY -->
+
+        <div id="applyFields" style="display:none;">
+
+            <input type="text"
+                   name="apply_link"
+                   placeholder="Apply Link">
+
+        </div>
+
+        <button type="submit">
+            Post Job
+        </button>
+
+    </form>
+
+</div>
+
+<!-- JOB LIST -->
+
+<div class="jobs-container">
+
+{% for job in jobs %}
+
+<div class="job-card">
+
+    <div class="job-title">
+        {{ job.job_title }}
+    </div>
+
+    <div class="company">
+        {{ job.organization_name }}
+    </div>
+
+    <div class="recruiter">
+        Recruiter: {{ job.recruiter_name }}
+    </div>
+
+    <div class="badges">
+
+        <div class="badge">
+            {{ job.experience }}
+        </div>
+
+        <div class="badge">
+            {{ job.employment_type }}
+        </div>
+
+        <div class="badge">
+            {{ job.hiring_type }}
+        </div>
+
+    </div>
+
+    <div class="description">
+        {{ job.job_description }}
+    </div>
+
+    <!-- WALKIN -->
+
+    {% if job.hiring_type == 'walkin' %}
+
+    <div class="section">
+
+        <div class="section-title">
+            Walk-In Details
+        </div>
+
+        <div class="meta">
+            Date: {{ job.walkin_date }}
+        </div>
+
+        <div class="meta">
+            Time:
+            {{ job.walkin_start }}
+            -
+            {{ job.walkin_end }}
+        </div>
+
+        <div class="meta">
+            Location:
+            {{ job.walkin_location }}
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <a href="/interested_job/{{ job.id }}"
+           class="interest-btn">
+
+           Interested
+           ({{ job.interested_count }})
+
+        </a>
+
+    </div>
+
+    {% else %}
+
+    <!-- APPLY -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Apply Online
+        </div>
+
+        <div class="meta">
+            Use the apply link below to submit your application.
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <a href="{{ job.apply_link }}"
+           target="_blank"
+           class="apply-btn">
+
+            Apply Now
+
+        </a>
+
+        <a href="/apply_job/{{ job.id }}"
+           class="interest-btn">
+
+            Applied
+            ({{ job.applied_count }})
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-box">
+            <div class="stat-number">
+                {{ job.days_live }}
+            </div>
+            <div class="stat-label">
+                Days Live
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-number">
+                {{ job.applied_count }}
+            </div>
+            <div class="stat-label">
+                Applications
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-number">
+                {{ job.interested_count }}
+            </div>
+            <div class="stat-label">
+                Interested
+            </div>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <div class="meta">
+            Posted By:
+            {{ job.username }}
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+function toggleHiringType(){
+
+    const hiringType =
+        document.getElementById("hiringType").value;
+
+    const walkinFields =
+        document.getElementById("walkinFields");
+
+    const applyFields =
+        document.getElementById("applyFields");
+
+    if(hiringType === "walkin"){
+
+        walkinFields.style.display = "block";
+        applyFields.style.display = "none";
+
+    }else{
+
+        walkinFields.style.display = "none";
+        applyFields.style.display = "block";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

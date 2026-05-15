@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLoop · {% block title %}{% endblock %}</title>
+
+    <!-- Google Fonts: Jost -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f0f9ff;
+            color: #1e405e;
+            font-family: 'Jost', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* custom scrollbar light blue */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d9eaff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6cb2eb;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4299e1;
+        }
+
+        /* ========== FIXED TOP BAR ========== */
+        .topbar {
+            background: #ffffff;
+            padding: 10px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #cde3f7;
+            box-shadow: 0 2px 8px rgba(0, 40, 60, 0.03);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Add padding to body to account for fixed topbar */
+        body {
+            padding-top: 70px;
+        }
+
+        /* left side: all nav links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #2c6288;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 6px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .nav-links a:hover {
+            background: #e5f2fe;
+            color: #1f6e9b;
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active {
+            background: #e5f2fe;
+            color: #1f6e9b;
+            font-weight: 600;
+        }
+
+        /* right side: profile picture + name */
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 18px 6px 14px;
+        }
+        .user-box span {
+            font-weight: 600;
+            color: #1d5b83;
+            font-size: 0.95rem;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .user-box img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #7bbae0;
+            object-fit: cover;
+        }
+
+        /* PROFILE POPUP */
+        #profilePopup {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 28px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 28px;
+            width: 290px;
+            box-shadow: 0 20px 35px rgba(0, 60, 100, 0.15);
+            z-index: 1001;
+            font-family: 'Jost', sans-serif;
+        }
+
+        #profilePopup h3 {
+            color: #2c769e;
+            margin-bottom: 18px;
+            border-left: 4px solid #6bb5ee;
+            padding-left: 14px;
+            font-weight: 600;
+        }
+
+        #profilePopup p {
+            margin: 10px 0;
+            font-size: 0.85rem;
+            color: #2c6288;
+        }
+
+        #profilePopup hr {
+            background: #cde0ee;
+            margin: 14px 0;
+        }
+
+        #profilePopup input[type="file"] {
+            background: #f6fafd;
+            border: 1px solid #c2d9ee;
+            border-radius: 40px;
+            padding: 8px 12px;
+            width: 100%;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            font-family: 'Jost', sans-serif;
+        }
+
+        #profilePopup button {
+            background: #6bb5ee;
+            width: 100%;
+            padding: 10px;
+            border-radius: 40px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        #profilePopup button:hover {
+            background: #5ba8e0;
+        }
+
+        .logout-popup-btn {
+            display: block;
+            text-align: center;
+            background: #fff0f0;
+            color: #c13b2b;
+            border: 1px solid #f5cdcd;
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            font-family: 'Jost', sans-serif;
+        }
+        .logout-popup-btn:hover {
+            background: #ffe0e0;
+            color: #a13022;
+            transform: translateY(-1px);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 28px 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* responsive */
+        @media (max-width: 780px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 20px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 16px;
+            }
+            .user-box {
+                align-self: center;
+            }
+            .main-content {
+                padding: 20px 18px;
+            }
+            #profilePopup {
+                right: 20px;
+                top: 110px;
+            }
+            body {
+                padding-top: 120px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            body {
+                padding-top: 160px;
+            }
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+         /* Feed-specific styles */
+        .create-btn {
+            background: linear-gradient(105deg, #6bb5ee, #3c8bcb);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            width: auto;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(60, 139, 203, 0.25);
+            color: white;
+            transition: 0.2s;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .create-btn:hover {
+            background: linear-gradient(105deg, #5ba8e0, #2e7bb5);
+            transform: translateY(-2px);
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #cce2f2, transparent);
+        }
+
+        .post {
+            background: #ffffff;
+            margin-bottom: 24px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #e2edf8;
+            transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+        }
+        .post:hover {
+            border-color: #bad7f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 30, 50, 0.08);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid #eef3fc;
+        }
+
+        .post-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-header-left img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #7bbae0;
+            object-fit: cover;
+        }
+
+        .post-header-info b {
+            color: #1f5a86;
+            font-size: 0.95rem;
+            font-family: 'Jost', sans-serif;
+            display: block;
+        }
+
+        .post-header-info small {
+            color: #698fae;
+            font-size: 0.7rem;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .menu-btn {
+            background: #eef3fc;
+            border: none;
+            color: #2c6288;
+            font-size: 1.2rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 35px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 10px;
+            width: 160px;
+            z-index: 10;
+            border: 1px solid #cde0ef;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .post-body {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .post-media {
+            width: 40%;
+            background: #f0f7fc;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .post-media img,
+        .post-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-content {
+            width: 60%;
+            padding: 18px;
+        }
+
+        .post-content p {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: #2c6288;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 0.7rem;
+            color: #5c8dae;
+            background: #eef4fc;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .comment-section {
+            display: none;
+            margin-top: 18px;
+            border-top: 1px solid #e0edf6;
+            padding-top: 14px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0 8px 0;
+            margin-top: 12px;
+            border-top: 1px solid #eef3fc;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+        }
+
+        .action-btn:hover {
+            background: #f0f7fe;
+            transform: translateY(-2px);
+        }
+
+        .action-icon svg {
+            width: 24px;
+            height: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .action-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8e8e8e;
+        }
+
+        .like-btn .action-icon svg {
+            stroke: #8e8e8e;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .like-btn.liked .action-icon svg {
+            stroke: #ff3040;
+            fill: #ff3040;
+            animation: likeAnimation 0.4s ease;
+        }
+
+        @keyframes likeAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 780px) {
+            .post-body {
+                flex-direction: column;
+            }
+            .post-media {
+                width: 100%;
+            }
+            .post-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- FIXED TOP BAR -->
+<div class="topbar">
+    <div class="nav-links">
+        <a href="/feed" class="{% if request.endpoint == 'feed' %}active{% endif %}">🏠 Feed</a>
+        <a href="/services" class="{% if request.endpoint == 'services' %}active{% endif %}">💼 Job / Service</a>
+        <a href="/alerts" class="{% if request.endpoint == 'alerts' %}active{% endif %}">⚠️ Alert</a>
+        <a href="/business" class="{% if request.endpoint == 'business' %}active{% endif %}">🏪 Business / Shop</a>
+        <a href="/create_post" class="{% if request.endpoint == 'create_post' %}active{% endif %}">✨ Create Post</a>
+    </div>
+
+    <div class="user-box" onclick="toggleProfile()">
+        <span>{{ user.username if user else 'User' }}</span>
+        <img src="{{ url_for('static', filename='uploads/' + user.profile_image) if user and user.profile_image else 'https://placehold.co/100x100/eef4fc/3b82c4?text=User' }}">
+    </div>
+
+    <div id="profilePopup">
+        <h3>✨ Profile</h3>
+        <p><b>Name:</b> {{ user.username if user else 'N/A' }}</p>
+        <p><b>Email:</b> {{ user.email if user else 'N/A' }}</p>
+        <p><b>Phone:</b> {{ user.phone if user else 'N/A' }}</p>
+        <p><b>Location:</b> {{ user.location if user else 'N/A' }}</p>
+        <hr>
+        <form method="POST" action="/update_profile" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <button type="submit">📸 Update Image</button>
+        </form>
+        <a href="/logout" class="logout-popup-btn">Logout</a>
+    </div>
+</div>
+
+
+{% extends "base.html" %}
+
+{% block title %}Feed{% endblock %}
+
+{% block content %}
+    <a href="/create_post">
+        <button class="create-btn">Create Post</button>
+    </a>
+
+    <hr>
+
+    <!-- POSTS FEED -->
+    {% for post in posts %}
+    <div class="post" data-post-id="{{ post.id }}">
+        <!-- HEADER -->
+        <div class="post-header">
+            <div class="post-header-left">
+                <img src="{{ url_for('static', filename='uploads/' + post.profile_image) if post.profile_image else 'https://placehold.co/100x100/eef4fc/3b82c4?text=Profile' }}">
+                <div class="post-header-info">
+                    <b>{{ post.username }}</b>
+                    <small>📌 {{ post.type }} | {{ post.location if post.location else 'Anywhere' }}</small>
+                </div>
+            </div>
+            <div style="position:relative;">
+                <button class="menu-btn" onclick="toggleMenu({{ loop.index }})">⋮</button>
+                <div id="menu-{{ loop.index }}" class="menu">
+                    <p>Report</p>
+                    <p>Not Interested</p>
+                    <p>Don't show this type</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BODY: media + content -->
+        <div class="post-body">
+            <div class="post-media">
+                {% if post.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}">
+                {% elif post.video %}
+                    <video controls>
+                        <source src="{{ url_for('static', filename='uploads/' + post.video) }}">
+                    </video>
+                {% else %}
+                    <div style="color:#8bb8d4;">No media</div>
+                {% endif %}
+            </div>
+
+            <div class="post-content">
+                <p>{{ post.content }}</p>
+                <div class="post-meta">
+                    {{ post.type }} • {{ post.location if post.location else 'Anywhere' }}
+                </div>
+
+                <!-- comments section -->
+                <div id="comments-{{ post.id }}" class="comment-section">
+                    <div class="comment-list" id="comment-list-{{ post.id }}"></div>
+                    <div class="comment-box">
+                        <input type="text" id="input-{{ post.id }}" placeholder="Write a comment...">
+                        <button onclick="addComment({{ post.id }})">Post</button>
+                    </div>
+                </div>
+
+                <!-- INSTAGRAM STYLE ACTION BUTTONS -->
+                <div class="post-actions">
+                    <button class="action-btn like-btn" data-post-id="{{ post.id }}" data-liked="false" onclick="handleLike(this, {{ post.id }})">
+                        <div class="action-icon" id="like-icon-{{ post.id }}">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">
+                            <span id="like-count-{{ post.id }}">{{ post.likes_count|default(0) }}</span> likes
+                        </div>
+                    </button>
+
+                    <button class="action-btn comment-btn" onclick="toggleComments({{ post.id }})">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Comment</div>
+                    </button>
+
+                    <button class="action-btn share-btn" onclick="sharePost({{ post.id }})">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <circle cx="18" cy="5" r="3"/>
+                                <circle cx="6" cy="12" r="3"/>
+                                <circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Share</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+<!-- MAIN CONTENT BLOCK -->
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+    // Profile popup toggle
+    function toggleProfile() {
+        const popup = document.getElementById("profilePopup");
+        if (popup.style.display === "none" || popup.style.display === "") {
+            popup.style.display = "block";
+        } else {
+            popup.style.display = "none";
+        }
+    }
+
+    // Close popup when clicking outside
+    document.addEventListener("click", function(event) {
+        const popup = document.getElementById("profilePopup");
+        const userBox = document.querySelector(".user-box");
+        if (popup && userBox && !userBox.contains(event.target) && popup.style.display === "block") {
+            popup.style.display = "none";
+        }
+    });
+
+     function toggleMenu(index) {
+            let menu = document.getElementById("menu-" + index);
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                document.querySelectorAll('.menu').forEach(m => m.style.display = "none");
+                menu.style.display = "block";
+            }
+        }
+
+        async function handleLike(btnElement, postId) {
+            const isLiked = btnElement.getAttribute('data-liked') === 'true';
+            const likeIcon = document.getElementById(`like-icon-${postId}`);
+            const countSpan = document.getElementById(`like-count-${postId}`);
+            let currentCount = parseInt(countSpan.innerText) || 0;
+
+            if (!isLiked) {
+                currentCount++;
+                countSpan.innerText = currentCount;
+                btnElement.setAttribute('data-liked', 'true');
+                btnElement.classList.add('liked');
+                likeIcon.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="#ff3040" stroke="#ff3040"/>
+                </svg>`;
+            } else {
+                currentCount--;
+                countSpan.innerText = currentCount;
+                btnElement.setAttribute('data-liked', 'false');
+                btnElement.classList.remove('liked');
+                likeIcon.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="none" stroke="#8e8e8e" stroke-width="2"/>
+                </svg>`;
+            }
+
+            try {
+                await fetch(`/like/${postId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            } catch(err) {
+                console.log('Like sync error:', err);
+            }
+        }
+
+        function toggleComments(postId) {
+            let section = document.getElementById("comments-" + postId);
+            if (section.style.display === "block") {
+                section.style.display = "none";
+            } else {
+                section.style.display = "block";
+                loadComments(postId);
+            }
+        }
+
+        async function loadComments(postId) {
+            try {
+                const res = await fetch('/get_comments/' + postId);
+                const data = await res.json();
+                let container = document.getElementById("comment-list-" + postId);
+                if (container) {
+                    container.innerHTML = "";
+                    data.forEach(c => {
+                        container.innerHTML += `<div class="comment"><b>${c.username}</b>: ${c.text}</div>`;
+                    });
+                }
+            } catch(err) {
+                console.log('Error loading comments:', err);
+            }
+        }
+
+        async function addComment(postId) {
+            let input = document.getElementById("input-" + postId);
+            let text = input.value;
+            if (!text.trim()) return;
+            try {
+                await fetch('/comment/' + postId, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+                input.value = "";
+                loadComments(postId);
+            } catch(err) {
+                alert("Could not add comment");
+            }
+        }
+
+        async function sharePost(postId) {
+            let postUrl = window.location.origin + "/post/" + postId;
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: "LocalLoop Post",
+                        text: "Check this out!",
+                        url: postUrl
+                    });
+                } catch(err) {}
+            } else {
+                await navigator.clipboard.writeText(postUrl);
+                alert("Link copied! Share anywhere 💙");
+            }
+        }
+
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest('.menu-btn')) {
+                document.querySelectorAll('.menu').forEach(m => m.style.display = "none");
+            }
+        });
+</script>
+
+</body>
+</html>

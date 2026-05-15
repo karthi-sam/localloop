@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <title>Melody Quest · Challenge Tracker</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome for music/mini list icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f5fb;
+      color: #1e1a2f;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      flex-wrap: wrap;
+    }
+
+    /* LEFT SIDE — enhanced with mini list style (music masterclass card vibe) */
+    .sidebar {
+      width: 300px;
+      background: linear-gradient(145deg, #ffffff 0%, #fefbff 100%);
+      padding: 24px 18px;
+      border-right: 1px solid rgba(99, 91, 255, 0.15);
+      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.02);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 28px;
+      color: #4b3bdb;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f0eefe;
+      padding: 10px 16px;
+      border-radius: 60px;
+      width: fit-content;
+    }
+
+    .logo i {
+      font-size: 28px;
+      color: #ffb347;
+    }
+
+    /* ---------- MINI LIST STYLES (inspired by "Music Master Class" card from reference) ---------- */
+    .mini-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 18px;
+      border-left: 5px solid #635bff;
+      padding-left: 14px;
+    }
+
+    .mini-list-header h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      background: linear-gradient(120deg, #2d2b5e, #635bff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.2px;
+    }
+
+    .mini-list-header span {
+      background: #eae6ff;
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4b3b9c;
+    }
+
+    .challenge-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    /* each challenge card transformed into elegant mini list item (music school aesthetic) */
+    .challenge-card {
+      background: #fbfaff;
+      border-radius: 1.2rem;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1.5px solid transparent;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(2px);
+    }
+
+    .challenge-card:hover {
+      transform: translateX(4px);
+      background: #f5f3ff;
+      border-color: #cbc3ff;
+    }
+
+    .challenge-card.active {
+      background: linear-gradient(105deg, #efecff, #ffffff);
+      border-color: #8a7eff;
+      box-shadow: 0 10px 20px -8px rgba(99, 91, 255, 0.2);
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .card-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1e1a3a;
+    }
+
+    .card-info h3 i {
+      color: #ffaa33;
+      font-size: 0.9rem;
+    }
+
+    .mini-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 0.7rem;
+      color: #6b5f9e;
+      font-weight: 500;
+    }
+
+    .progress-chip {
+      background: #e9e4ff;
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      color: #3c2b8c;
+    }
+
+    .add-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      background: #635bff;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.2s;
+      box-shadow: 0 5px 12px rgba(99, 91, 255, 0.3);
+    }
+
+    .add-btn:hover {
+      background: #524ad4;
+      transform: scale(0.98);
+    }
+
+    /* MAIN PANEL */
+    .main {
+      flex: 1;
+      padding: 24px 28px;
+    }
+
+    .top-box {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.03);
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .top-header h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #2f2b60, #5b4bdb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 40px;
+      padding: 10px 22px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .primary-btn {
+      background: #635bff;
+      color: white;
+    }
+
+    .danger-btn {
+      background: #ffe6e5;
+      color: #d14545;
+      border: 1px solid #ffcdca;
+    }
+
+    .danger-btn:hover {
+      background: #ffccc8;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .stat-card {
+      background: #f9f8ff;
+      padding: 18px;
+      border-radius: 24px;
+      transition: 0.2s;
+      border: 1px solid #edebfc;
+    }
+
+    .stat-card p {
+      color: #6b5e9e;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+    }
+
+    .stat-card h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2d2a5c;
+    }
+
+    /* ACTIVITY SECTION */
+    .activity-section {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
+    }
+
+    .activity-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .activity-top h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .activity-box {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .activity-box input {
+      padding: 12px 18px;
+      border-radius: 60px;
+      border: 1px solid #ddd9f0;
+      min-width: 240px;
+      background: #fefdff;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .activity-box input:focus {
+      border-color: #8a7eff;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 800px;
+    }
+
+    th,
+    td {
+      border: 1px solid #edeefc;
+      text-align: center;
+      padding: 12px 8px;
+      font-size: 0.8rem;
+    }
+
+    th {
+      background: #fbfaff;
+      font-weight: 700;
+      color: #3f3a6b;
+    }
+
+    .activity-name {
+      text-align: left;
+      min-width: 210px;
+      font-weight: 700;
+      background: white;
+      position: sticky;
+      left: 0;
+      background-color: #ffffff;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #6c5ce7;
+      cursor: pointer;
+      transform: scale(1);
+    }
+
+    /* CHART SECTION */
+    .chart-section {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 28px;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .chart-card {
+      background: #fbfaff;
+      padding: 20px;
+      border-radius: 24px;
+      text-align: center;
+    }
+
+    .chart-card h3 {
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 2rem;
+      padding: 28px;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+
+    .modal-content input,
+    .modal-content select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 60px;
+      border: 1px solid #cfcaf0;
+      margin-bottom: 18px;
+      outline: none;
+    }
+
+    /* Mini list additional decoration (music master card aura) */
+    .music-note-decoration {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 18px;
+      color: #9a8fd1;
+    }
+
+    @media(max-width:900px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ede9ff;
+      }
+
+      .main {
+        padding: 18px;
+      }
+
+      .top-header h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LEFT SIDE : MINI LIST STYLE (music master class inspired) -->
+    <div class="sidebar">
+      <div class="logo">
+        <i class="fas fa-head-side-music"></i> 🎵 Musmentor
+      </div>
+
+      <!-- Mini list header with badge as shown in reference image style -->
+      <div class="mini-list-header">
+        <h3><i class="fas fa-list-music"></i> Challenges card</h3>
+        <span>✨ active missions</span>
+      </div>
+
+      <div class="challenge-list" id="challengeList">
+        <!-- dynamic challenge items (mini list) will render here -->
+      </div>
+
+      <button class="add-btn" onclick="openModal()">
+        <i class="fas fa-plus-circle"></i> + Add Challenge
+      </button>
+      <div class="music-note-decoration">
+        <i class="fas fa-drumstick-bite"></i> 34k hours of practice
+      </div>
+    </div>
+
+    <!-- MAIN RIGHT PANEL (tracker core) -->
+    <div class="main">
+
+      <div class="top-box">
+        <div class="top-header">
+          <h1 id="challengeTitle">🎼 No Challenge Selected</h1>
+          <div class="top-actions">
+            <button class="danger-btn" onclick="deleteChallenge()">
+              <i class="fas fa-trash-alt"></i> Delete Challenge
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p><i class="far fa-calendar-alt"></i> Total Days</p>
+            <h2 id="totalDays">0</h2>
+          </div>
+          <div class="stat-card">
+            <p><i class="fas fa-check-circle"></i> Completed Days</p>
+            <h2 id="completedDays">0</h2>
+          </div>
+          <div class="stat-card">
+            <p><i class="fas fa-chart-line"></i> Progress</p>
+            <h2 id="progressPercent">0%</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="activity-section">
+        <div class="activity-top">
+          <h2><i class="fas fa-notes-music"></i> Activities</h2>
+          <div class="activity-box">
+            <input type="text" id="activityInput" placeholder="e.g., Piano scales, Ear training, Rhythm clap">
+            <button class="primary-btn" onclick="addActivity()">
+              <i class="fas fa-plus"></i> Add Activity
+            </button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table id="activityTable"></table>
+        </div>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-section">
+        <h2><i class="fas fa-chart-simple"></i> Challenge Analytics</h2>
+        <div class="chart-grid">
+          <div class="chart-card">
+            <h3>Overall Progress</h3>
+            <canvas id="progressChart" width="300" height="200"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Activity Progress Trend</h3>
+            <canvas id="activityChart" width="300" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="challengeModal">
+    <div class="modal-content">
+      <h2>✨ Create Challenge</h2>
+      <input type="text" id="challengeName" placeholder="Challenge Name (e.g., 30-Day Melody Quest)">
+      <select id="challengeDays">
+        <option value="30">30 Days</option>
+        <option value="60">60 Days</option>
+        <option value="75">75 Days</option>
+        <option value="100">100 Days</option>
+        <option value="365">365 Days</option>
+      </select>
+      <button class="primary-btn" style="width:100%;" onclick="createChallenge()">
+        🚀 Start Challenge
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ---------- GLOBAL DATA ----------
+    let challenges = JSON.parse(localStorage.getItem("challenges")) || [];
+    let selectedChallengeId = challenges.length ? challenges[0].id : null;
+
+    let progressChart;
+    let activityChart;
+
+    // helper: save to localStorage
+    function saveData() {
+      localStorage.setItem("challenges", JSON.stringify(challenges));
+    }
+
+    // modal functions
+    function openModal() {
+      document.getElementById("challengeModal").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("challengeModal").style.display = "none";
+    }
+
+    // create challenge
+    function createChallenge() {
+      const name = document.getElementById("challengeName").value.trim();
+      const days = parseInt(document.getElementById("challengeDays").value);
+      if (!name) {
+        alert("Please enter a musical challenge name!");
+        return;
+      }
+      const newChallenge = {
+        id: Date.now(),
+        name: name,
+        totalDays: days,
+        activities: []
+      };
+      challenges.push(newChallenge);
+      selectedChallengeId = newChallenge.id;
+      saveData();
+      renderSidebar();    // refreshes mini list with new style
+      renderChallenge();
+      closeModal();
+      document.getElementById("challengeName").value = "";
+    }
+
+    // get current challenge object
+    function getChallenge() {
+      return challenges.find(c => c.id === selectedChallengeId);
+    }
+
+    // compute how many days all activities are completed
+    function calculateCompletedDays(challenge) {
+      if (!challenge || !challenge.activities.length) return 0;
+      let count = 0;
+      for (let day = 0; day < challenge.totalDays; day++) {
+        const allDone = challenge.activities.every(act => act.progress[day] === true);
+        if (allDone) count++;
+      }
+      return count;
+    }
+
+    // RENDER LEFT SIDE (Mini list style)
+    function renderSidebar() {
+      const listContainer = document.getElementById("challengeList");
+      if (!listContainer) return;
+      if (challenges.length === 0) {
+        listContainer.innerHTML = `<div style="background:#f4efff; border-radius: 1.2rem; padding: 20px; text-align:center; color:#6c5b9e;"><i class="fas fa-music"></i> No challenges yet.<br>Tap + to begin</div>`;
+        return;
+      }
+      listContainer.innerHTML = "";
+      challenges.forEach(ch => {
+        const completedDays = calculateCompletedDays(ch);
+        const percent = ch.totalDays ? Math.round((completedDays / ch.totalDays) * 100) : 0;
+        const isActive = (selectedChallengeId === ch.id);
+        const challengeDiv = document.createElement("div");
+        challengeDiv.className = `challenge-card ${isActive ? 'active' : ''}`;
+        challengeDiv.setAttribute("data-id", ch.id);
+        challengeDiv.innerHTML = `
+          <div class="card-info">
+            <h3><i class="fas fa-guitar"></i> ${escapeHtml(ch.name)}</h3>
+            <div class="mini-meta">
+              <span><i class="far fa-clock"></i> ${ch.totalDays} days</span>
+              <span><i class="fas fa-calendar-check"></i> ${completedDays} full days</span>
+            </div>
+          </div>
+          <div class="progress-chip">${percent}%</div>
+        `;
+        challengeDiv.addEventListener("click", (e) => {
+          e.stopPropagation();
+          selectedChallengeId = ch.id;
+          renderSidebar();
+          renderChallenge();
+        });
+        listContainer.appendChild(challengeDiv);
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // add new activity
+    function addActivity() {
+      const challenge = getChallenge();
+      if (!challenge) {
+        alert("Create or select a challenge first!");
+        return;
+      }
+      const input = document.getElementById("activityInput");
+      const name = input.value.trim();
+      if (!name) {
+        alert("Enter an activity (e.g., Vocal practice)");
+        return;
+      }
+      const progress = new Array(challenge.totalDays).fill(false);
+      challenge.activities.push({ name, progress });
+      input.value = "";
+      saveData();
+      renderChallenge();
+      renderSidebar();  // update progress chips
+    }
+
+    // toggle checkbox
+    function toggleCheck(activityIndex, dayIndex) {
+      const challenge = getChallenge();
+      if (!challenge) return;
+      challenge.activities[activityIndex].progress[dayIndex] = !challenge.activities[activityIndex].progress[dayIndex];
+      saveData();
+      renderChallenge();   // refresh table & charts
+      renderSidebar();     // refresh mini list stats
+    }
+
+    // delete challenge
+    function deleteChallenge() {
+      if (!selectedChallengeId) return;
+      if (confirm("Delete this challenge? All progress will vanish.")) {
+        challenges = challenges.filter(c => c.id !== selectedChallengeId);
+        selectedChallengeId = challenges.length ? challenges[0].id : null;
+        saveData();
+        renderSidebar();
+        renderChallenge();
+      }
+    }
+
+    // RENDER main area: stats, table, charts
+    function renderChallenge() {
+      const challenge = getChallenge();
+      if (!challenge) {
+        document.getElementById("challengeTitle").innerText = "🎵 No Challenge Selected";
+        document.getElementById("totalDays").innerText = "0";
+        document.getElementById("completedDays").innerText = "0";
+        document.getElementById("progressPercent").innerText = "0%";
+        document.getElementById("activityTable").innerHTML = `<tr><td colspan="10" style="padding:40px; text-align:center;">✨ Select or create a challenge to start tracking ✨</td></tr>`;
+        if (progressChart) progressChart.destroy();
+        if (activityChart) activityChart.destroy();
+        return;
+      }
+
+      const completed = calculateCompletedDays(challenge);
+      const percent = Math.round((completed / challenge.totalDays) * 100) || 0;
+
+      document.getElementById("challengeTitle").innerHTML = `<i class="fas fa-crown"></i> ${escapeHtml(challenge.name)}`;
+      document.getElementById("totalDays").innerText = challenge.totalDays;
+      document.getElementById("completedDays").innerText = completed;
+      document.getElementById("progressPercent").innerText = percent + "%";
+
+      // generate activity table
+      let html = `<thead><tr><th class="activity-name">🎯 Activity</th>`;
+      for (let i = 1; i <= challenge.totalDays; i++) {
+        html += `<th>${i}</th>`;
+      }
+      html += `</tr></thead><tbody>`;
+
+      if (challenge.activities.length === 0) {
+        html += `<tr><td colspan="${challenge.totalDays + 1}" style="text-align:center; padding: 32px;">🎼 No activities yet. Add your first practice routine! 🎶</td></tr>`;
+      } else {
+        challenge.activities.forEach((activity, actIdx) => {
+          html += `<tr>
+                      <td class="activity-name"><i class="fas fa-music"></i> ${escapeHtml(activity.name)}</td>`;
+          for (let d = 0; d < challenge.totalDays; d++) {
+            const isChecked = activity.progress[d] === true;
+            html += `<td><input type="checkbox" class="day-checkbox" data-act="${actIdx}" data-day="${d}" ${isChecked ? 'checked' : ''}></td>`;
+          }
+          html += `</tr>`;
+        });
+      }
+      html += `</tbody>`;
+      document.getElementById("activityTable").innerHTML = html;
+
+      // attach checkbox listeners
+      document.querySelectorAll(".day-checkbox").forEach(cb => {
+        cb.addEventListener("change", (e) => {
+          const actIdx = parseInt(cb.getAttribute("data-act"));
+          const dayIdx = parseInt(cb.getAttribute("data-day"));
+          const currentChallenge = getChallenge();
+          if (currentChallenge && currentChallenge.activities[actIdx]) {
+            currentChallenge.activities[actIdx].progress[dayIdx] = cb.checked;
+            saveData();
+            renderChallenge();    // re-render to reflect stats & charts
+            renderSidebar();      // update left list percentages
+          }
+        });
+      });
+
+      // update charts
+      renderCharts(challenge);
+    }
+
+    function renderCharts(challenge) {
+      const completedDaysOverall = calculateCompletedDays(challenge);
+      const remaining = challenge.totalDays - completedDaysOverall;
+      const ctx1 = document.getElementById("progressChart").getContext("2d");
+      if (progressChart) progressChart.destroy();
+      progressChart = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed Days', 'Remaining Days'],
+          datasets: [{ data: [completedDaysOverall, remaining], backgroundColor: ['#6c5ce7', '#e0dafe'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      const ctx2 = document.getElementById("activityChart").getContext("2d");
+      if (activityChart) activityChart.destroy();
+      const labels = challenge.activities.map(a => a.name.length > 14 ? a.name.slice(0, 12) + ".." : a.name);
+      const data = challenge.activities.map(act => {
+        const done = act.progress.filter(p => p === true).length;
+        return Math.round((done / challenge.totalDays) * 100);
+      });
+      activityChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Completion %',
+            data: data,
+            borderColor: '#8a7eff',
+            backgroundColor: 'rgba(99,91,255,0.08)',
+            fill: true,
+            tension: 0.3,
+            pointBackgroundColor: '#635bff',
+            pointBorderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '% Mastered' } } }
+        }
+      });
+    }
+
+    // Helper to select challenge from outside
+    window.selectChallenge = function(id) {
+      selectedChallengeId = id;
+      renderSidebar();
+      renderChallenge();
+    };
+
+    // initial render
+    renderSidebar();
+    renderChallenge();
+  </script>
+</body>
+
+</html>

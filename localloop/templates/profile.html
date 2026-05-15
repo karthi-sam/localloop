@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile · LocalLoop</title>
+
+    <!-- Google Fonts: Jost -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f0f9ff;
+            color: #1e405e;
+            font-family: 'Jost', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d9eaff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6cb2eb;
+            border-radius: 8px;
+        }
+
+        /* ========== TOP BAR ========== */
+        .topbar {
+            background: #ffffff;
+            padding: 10px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #cde3f7;
+            box-shadow: 0 2px 8px rgba(0, 40, 60, 0.03);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        body {
+            padding-top: 70px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #2c6288;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 6px;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #e5f2fe;
+            color: #1f6e9b;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 18px 6px 14px;
+        }
+        .user-box span {
+            font-weight: 600;
+            color: #1d5b83;
+            font-size: 0.95rem;
+        }
+
+        .user-box img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #7bbae0;
+            object-fit: cover;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 28px 32px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* SIMPLE PROFILE CARD - Reduced size */
+        .profile-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2edf8;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: 0.2s;
+        }
+
+        /* Simple header with gradient */
+        .profile-header {
+            background: linear-gradient(135deg, #6bb5ee 0%, #3c8bcb 100%);
+            height: 80px;
+            position: relative;
+        }
+
+        /* Profile Image - Smaller */
+        .profile-image-wrapper {
+            position: relative;
+            margin-top: -40px;
+            margin-left: 24px;
+            display: inline-block;
+        }
+
+        .profile-image-wrapper img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Profile Info - Compact */
+        .profile-info {
+            padding: 16px 24px 20px 24px;
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1f5a86;
+            margin-bottom: 4px;
+        }
+
+        .profile-bio {
+            color: #698fae;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        /* Simple details row */
+        .profile-details-row {
+            display: flex;
+            gap: 16px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .detail-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f7fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #2c6288;
+        }
+
+        /* Email with eye button - inline */
+        .email-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f7fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #2c6288;
+        }
+
+        .toggle-visibility {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            color: #6bb5ee;
+        }
+
+        .toggle-visibility:hover {
+            transform: scale(1.1);
+        }
+
+        /* Stats - Compact */
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            margin: 16px 0;
+            padding: 12px 0;
+            border-top: 1px solid #eef3fc;
+            border-bottom: 1px solid #eef3fc;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .stat-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f5a86;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #698fae;
+        }
+
+        /* Edit button - Smaller */
+        .edit-btn {
+            background: #6bb5ee;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .edit-btn:hover {
+            background: #5ba8e0;
+            transform: translateY(-1px);
+        }
+
+        /* POSTS GRID */
+        .posts-section {
+            margin-top: 24px;
+        }
+
+        .posts-section h3 {
+            color: #1f5a86;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2edf8;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            border-color: #bad7f0;
+            box-shadow: 0 4px 12px rgba(0, 30, 50, 0.08);
+        }
+
+        .post-media {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #f0f7fc;
+        }
+
+        .post-content {
+            padding: 10px;
+        }
+
+        .post-content p {
+            font-size: 0.8rem;
+            color: #2c6288;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-meta {
+            font-size: 0.65rem;
+            color: #8eacc4;
+            margin-top: 6px;
+        }
+
+        /* Empty state */
+        .empty-posts {
+            text-align: center;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2edf8;
+            color: #698fae;
+        }
+
+        /* PROFILE POPUP */
+        #profilePopup {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 28px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 24px;
+            width: 280px;
+            box-shadow: 0 20px 35px rgba(0, 60, 100, 0.15);
+            z-index: 1001;
+        }
+
+        #profilePopup h3 {
+            color: #2c769e;
+            margin-bottom: 16px;
+            border-left: 3px solid #6bb5ee;
+            padding-left: 12px;
+            font-size: 1.1rem;
+        }
+
+        #profilePopup p {
+            margin: 8px 0;
+            font-size: 0.8rem;
+            color: #2c6288;
+        }
+
+        #profilePopup hr {
+            background: #cde0ee;
+            margin: 12px 0;
+        }
+
+        #profilePopup input[type="file"] {
+            background: #f6fafd;
+            border: 1px solid #c2d9ee;
+            border-radius: 30px;
+            padding: 8px 12px;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 0.7rem;
+        }
+
+        #profilePopup button {
+            background: #6bb5ee;
+            width: 100%;
+            padding: 8px;
+            border-radius: 30px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .logout-popup-btn {
+            display: block;
+            text-align: center;
+            background: #fff0f0;
+            color: #c13b2b;
+            border: 1px solid #f5cdcd;
+            margin-top: 12px;
+            padding: 8px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        /* responsive */
+        @media (max-width: 780px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px 20px;
+            }
+            body {
+                padding-top: 110px;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .main-content {
+                padding: 20px 16px;
+            }
+            .posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .profile-image-wrapper img {
+                width: 65px;
+                height: 65px;
+            }
+            .profile-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-details-row {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="nav-links">
+        <a href="/services">Job / Service</a>
+        <a href="/feed">Feed</a>
+        <a href="/create_post">Create</a>
+    </div>
+
+    <div class="user-box" onclick="toggleProfile()">
+        <span>{{ user.username if user else 'User' }}</span>
+        <img src="{{ url_for('static', filename='uploads/' + user.profile_image) if user and user.profile_image else 'https://placehold.co/100x100/eef4fc/3b82c4?text=User' }}">
+    </div>
+
+    <div id="profilePopup">
+        <h3>Profile</h3>
+        <p><b>Name:</b> {{ user.username if user else 'N/A' }}</p>
+        <p><b>Email:</b> {{ user.email if user else 'N/A' }}</p>
+        <p><b>Location:</b> {{ user.location if user else 'N/A' }}</p>
+        <hr>
+        <form method="POST" action="/update_profile" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <button type="submit">Update Image</button>
+        </form>
+        <a href="/logout" class="logout-popup-btn">Logout</a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <!-- SIMPLE PROFILE CARD -->
+    <div class="profile-card">
+        <div class="profile-header"></div>
+
+        <div class="profile-image-wrapper">
+            <img src="{{ url_for('static', filename='uploads/' + user.profile_image) if user and user.profile_image else 'https://placehold.co/100x100/eef4fc/3b82c4?text=User' }}" alt="Profile">
+        </div>
+
+        <div class="profile-info">
+            <div class="profile-name">{{ user.username if user else 'User' }}</div>
+
+            <!-- Details in chips row -->
+            <div class="profile-details-row">
+
+    <!-- EMAIL -->
+    {% if user.email %}
+    <div class="email-chip">
+           {{ user.email }}
+    </div>
+    {% endif %}
+
+
+    <!-- PHONE -->
+    {% if user.phone %}
+    <div class="detail-chip">
+         {{ user.phone }}
+    </div>
+    {% endif %}
+
+    <!-- CATEGORY -->
+    {% if user.category %}
+    <div class="detail-chip">
+         {{ user.category }}
+    </div>
+    {% endif %}
+
+    <!-- LOCATION -->
+    {% if user.location %}
+    <div class="detail-chip">
+         {{ user.location }}
+    </div>
+    {% endif %}
+
+    <!-- COMPANY -->
+    {% if user.company_name %}
+    <div class="detail-chip">
+         {{ user.company_name }}
+    </div>
+    {% endif %}
+
+    <!-- BUSINESS -->
+    {% if user.business_name %}
+    <div class="detail-chip">
+        {{ user.business_name }}
+    </div>
+    {% endif %}
+
+    <!-- SERVICE TYPE -->
+    {% if user.service_type %}
+    <div class="detail-chip">
+         {{ user.service_type }}
+    </div>
+    {% endif %}
+
+    <!-- BUSINESS MODE -->
+    {% if user.business_mode %}
+    <div class="detail-chip">
+         {{ user.business_mode }}
+    </div>
+    {% endif %}
+
+    <!-- SHOP -->
+    {% if user.shop_name %}
+    <div class="detail-chip">
+         {{ user.shop_name }}
+    </div>
+    {% endif %}
+
+    <!-- SHOP TYPE -->
+    {% if user.shop_type %}
+    <div class="detail-chip">
+         {{ user.shop_type }}
+    </div>
+    {% endif %}
+
+    <!-- JOB TYPE -->
+    {% if user.job_type %}
+    <div class="detail-chip">
+         {{ user.job_type }}
+    </div>
+    {% endif %}
+
+    <!-- ALERT TYPE -->
+    {% if user.alert_type %}
+    <div class="detail-chip">
+         {{ user.alert_type }}
+    </div>
+    {% endif %}
+
+    <!-- MAP LINK -->
+    {% if user.map_link %}
+    <div class="detail-chip">
+        <a href="{{ user.map_link }}"
+           target="_blank"
+           style="color:#2c6288;text-decoration:none;">
+            Open Map
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+            <!-- Stats row -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-number">{{ post_count }}</span>
+                    <span class="stat-label">posts</span>
+                </div>
+            </div>
+
+            <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+                    <a href="/logout" class="logout-popup-btn">Logout</a>
+
+        </div>
+    </div>
+
+    <!-- POSTS SECTION -->
+    <div class="posts-section">
+        <h3>My Posts</h3>
+
+        <div class="posts-grid">
+            {% for post in posts %}
+            <div class="post-card">
+                {% if post.image %}
+                    <img class="post-media" src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Post">
+                {% elif post.video %}
+                    <video class="post-media">
+                        <source src="{{ url_for('static', filename='uploads/' + post.video) }}">
+                    </video>
+                {% else %}
+                    <div class="post-media" style="display: flex; align-items: center; justify-content: center; background: #f0f7fc;">
+                        <span style="color: #8eacc4; font-size: 0.7rem;">No media</span>
+                    </div>
+                {% endif %}
+                <div class="post-content">
+                    <p>{{ post.content[:80] if post.content else '' }}{% if post.content and post.content|length > 80 %}...{% endif %}</p>
+                    <div class="post-meta">
+                        ❤️ {{ post.likes_count|default(0) }} 💬 {{ post.comments_count|default(0) }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if posts|length == 0 %}
+        <div class="empty-posts">
+            <p>No posts yet.</p>
+            <p style="margin-top: 8px;">
+                <a href="/create_post" style="color: #6bb5ee; text-decoration: none;">Create your first post →</a>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    let originalEmail = "{{ user.email if user and user.email else '' }}";
+    let isEmailVisible = {{ 'true' if user and user.show_email else 'false' }};
+
+
+
+    function editProfile() {
+        window.location.href = "/edit_profile";
+    }
+
+    function toggleProfile() {
+        const popup = document.getElementById("profilePopup");
+        if (popup.style.display === "none" || popup.style.display === "") {
+            popup.style.display = "block";
+        } else {
+            popup.style.display = "none";
+        }
+    }
+
+    document.addEventListener("click", function(event) {
+        const popup = document.getElementById("profilePopup");
+        const userBox = document.querySelector(".user-box");
+        if (popup && userBox && !userBox.contains(event.target) && popup.style.display === "block") {
+            popup.style.display = "none";
+        }
+    });
+
+    {% if user.service_description %}
+<div style="
+    margin-top:16px;
+    background:#f0f7fe;
+    padding:14px;
+    border-radius:14px;
+    color:#2c6288;
+    font-size:0.85rem;
+    line-height:1.5;
+">
+    <b>About Service:</b><br>
+    {{ user.service_description }}
+</div>
+{% endif %}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post</title>
+</head>
+<body style="background:#121212; color:white; font-family:Arial;">
+
+    <div style="max-width:600px; margin:40px auto;">
+
+        <h3>{{ post.username }}</h3>
+
+        <p>{{ post.content }}</p>
+
+        {% if post.image %}
+            <img src="{{ url_for('static', filename='uploads/' + post.image) }}" width="100%">
+        {% endif %}
+
+        {% if post.video %}
+            <video controls width="100%">
+                <source src="{{ url_for('static', filename='uploads/' + post.video) }}">
+            </video>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

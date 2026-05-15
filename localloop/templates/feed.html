@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalLoop</title>
+
+    <!-- Google Fonts: Jost -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f0f9ff;
+            color: #1e405e;
+            font-family: 'Jost', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d9eaff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6cb2eb;
+            border-radius: 8px;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            background: #ffffff;
+            padding: 10px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #cde3f7;
+            box-shadow: 0 2px 8px rgba(0, 40, 60, 0.03);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        body {
+            padding-top: 70px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #2c6288;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 6px;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #e5f2fe;
+            color: #1f6e9b;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 18px 6px 14px;
+        }
+        .user-box span {
+            font-weight: 600;
+            color: #1d5b83;
+            font-size: 0.95rem;
+        }
+
+        .user-box img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #7bbae0;
+            object-fit: cover;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 28px 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .create-btn {
+            background: linear-gradient(105deg, #6bb5ee, #3c8bcb);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(60, 139, 203, 0.25);
+            color: white;
+            transition: 0.2s;
+        }
+
+        .create-btn:hover {
+            background: linear-gradient(105deg, #5ba8e0, #2e7bb5);
+            transform: translateY(-2px);
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #cce2f2, transparent);
+        }
+
+        .post {
+            background: #ffffff;
+            margin-bottom: 24px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #e2edf8;
+            transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+        }
+        .post:hover {
+            border-color: #bad7f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 30, 50, 0.08);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid #eef3fc;
+        }
+
+        .post-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-header-left img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #7bbae0;
+            object-fit: cover;
+        }
+
+        .post-header-info b {
+            color: #1f5a86;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        .post-header-info small {
+            color: #698fae;
+            font-size: 0.7rem;
+        }
+
+        .menu-btn {
+            background: #eef3fc;
+            border: none;
+            color: #2c6288;
+            font-size: 1.2rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .menu-btn:hover {
+            background: #e1eefa;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 35px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 10px;
+            width: 160px;
+            z-index: 10;
+            border: 1px solid #cde0ef;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .menu p {
+            margin: 8px 0;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 10px;
+            color: #2c6288;
+            font-size: 0.85rem;
+        }
+
+        .menu p:hover {
+            background: #e5f2fe;
+            color: #1f6e9b;
+        }
+
+        .post-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-media {
+            width: 100%;
+            background: #f0f7fc;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .post-media img,
+        .post-media video {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-content {
+            width: 100%;
+            padding: 18px;
+        }
+
+        .post-content p {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: #2c6288;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 0.7rem;
+            color: #5c8dae;
+            background: #eef4fc;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .comment-section {
+            display: none;
+            margin-top: 18px;
+            border-top: 1px solid #e0edf6;
+            padding-top: 14px;
+        }
+
+        .comment-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+
+        .comment {
+            font-size: 0.8rem;
+            margin: 6px 0;
+            padding: 8px 12px;
+            background: #f4fafd;
+            border-radius: 20px;
+            color: #2c6288;
+        }
+
+        .comment b {
+            color: #2c769e;
+        }
+
+        .comment-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-box input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 60px;
+            border: 1px solid #cde0ef;
+            outline: none;
+            background: white;
+        }
+
+        .comment-box input:focus {
+            border-color: #6cb2eb;
+            box-shadow: 0 0 0 2px rgba(108, 178, 235, 0.2);
+        }
+
+        .comment-box button {
+            padding: 8px 18px;
+            border-radius: 40px;
+            background: #6bb5ee;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0 8px 0;
+            margin-top: 12px;
+            border-top: 1px solid #eef3fc;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+        }
+
+        .action-btn:hover {
+            background: #f0f7fe;
+            transform: translateY(-2px);
+        }
+
+        .action-icon svg {
+            width: 24px;
+            height: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .action-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8e8e8e;
+            letter-spacing: 0.3px;
+        }
+
+        #profilePopup {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 28px;
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 28px;
+            width: 290px;
+            box-shadow: 0 20px 35px rgba(0, 60, 100, 0.15);
+            z-index: 1001;
+        }
+
+        #profilePopup h3 {
+            color: #2c769e;
+            margin-bottom: 18px;
+            border-left: 4px solid #6bb5ee;
+            padding-left: 14px;
+            font-weight: 600;
+        }
+
+        #profilePopup p {
+            margin: 10px 0;
+            font-size: 0.85rem;
+            color: #2c6288;
+        }
+
+        #profilePopup hr {
+            background: #cde0ee;
+            margin: 14px 0;
+        }
+
+        #profilePopup input[type="file"] {
+            background: #f6fafd;
+            border: 1px solid #c2d9ee;
+            border-radius: 40px;
+            padding: 8px 12px;
+            width: 100%;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+        }
+
+        #profilePopup button {
+            background: #6bb5ee;
+            width: 100%;
+            padding: 10px;
+            border-radius: 40px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .logout-popup-btn {
+            display: block;
+            text-align: center;
+            background: #fff0f0;
+            color: #c13b2b;
+            border: 1px solid #f5cdcd;
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* JOB FEED CARD */
+        .job-feed-card {
+            background: #f8fbff;
+            border: 1px solid #d9eaff;
+            border-radius: 20px;
+            padding: 18px;
+        }
+
+        .job-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1d4ed8;
+        }
+
+        .job-company {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 4px;
+            color: #374151;
+        }
+
+        .job-recruiter {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .job-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .job-badge {
+            background: #e0efff;
+            color: #2563eb;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .job-description {
+            margin-top: 18px;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .job-section {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid #edf4ff;
+        }
+
+        .job-section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2563eb;
+        }
+
+        .job-meta {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .job-apply-btn,
+        .job-interest-btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .job-apply-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .job-interest-btn {
+            background: #e0efff;
+            color: #2563eb;
+        }
+
+        .job-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .job-stat-box {
+            flex: 1;
+            min-width: 100px;
+            background: white;
+            padding: 12px;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .job-stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .job-stat-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        @media (max-width: 780px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 20px;
+            }
+            body {
+                padding-top: 110px;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .main-content {
+                padding: 20px 18px;
+            }
+            .post-media img,
+            .post-media video {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="nav-links">
+        <a href="/jobs">Jobs</a>
+        <a href="/services">Services</a>
+        <a href="/shops">Shops</a>
+    </div>
+
+    <div class="user-box" onclick="goToProfile()">
+        <span>{{ user[1] if user else 'User' }}</span>
+        <img src="{{ url_for('static', filename='uploads/' + user['profile_image']) if user and user['profile_image'] else 'https://placehold.co/100x100/eef4fc/3b82c4?text=User' }}">
+    </div>
+
+    <div id="profilePopup">
+        <h3>Profile</h3>
+        <p><b>Name:</b> {{ user.username if user else 'N/A' }}</p>
+        <p><b>Email:</b> {{ user.email if user else 'N/A' }}</p>
+        <p><b>Phone:</b> {{ user.phone if user else 'N/A' }}</p>
+        <p><b>Location:</b> {{ user.location if user else 'N/A' }}</p>
+        <hr>
+        <form method="POST" action="/update_profile" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <button type="submit">Update Image</button>
+        </form>
+        <a href="/logout" class="logout-popup-btn">Logout</a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <a href="/create_post">
+        <button class="create-btn">+ Create Post</button>
+    </a>
+
+    <hr>
+
+    <!-- POSTS FEED -->
+    {% for post in posts %}
+    <div class="post" data-post-id="{{ post.id }}">
+
+        <!-- HEADER -->
+        <div class="post-header">
+            <div class="post-header-left">
+                <img src="{{ url_for('static', filename='uploads/' + post.profile_image) if post.profile_image else 'https://placehold.co/100x100/eef4fc/3b82c4?text=Profile' }}">
+                <div class="post-header-info">
+                    <b>{{ post.username }}</b>
+                    <small>{{ post.type if post.type else 'Post' }} | {{ post.location if post.location else 'Anywhere' }}</small>
+                </div>
+            </div>
+            <div style="position:relative;">
+                <button class="menu-btn" onclick="event.stopPropagation(); toggleMenu({{ loop.index }})">⋮</button>
+                <div id="menu-{{ loop.index }}" class="menu">
+                    <p>Report</p>
+                    <p>Not Interested</p>
+                    <p>Don't show this type</p>
+                    {% if post.user_id == session['user_id'] %}
+                    <p onclick="deletePost({{ post.id }}, '{{ post.feed_type }}')" style="color:#c13b2b;">Delete Post</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="post-body">
+            <div class="post-media">
+                {% if post.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Post image" loading="lazy">
+                {% elif post.video %}
+                    <video controls preload="metadata">
+                        <source src="{{ url_for('static', filename='uploads/' + post.video) }}">
+                    </video>
+                {% else %}
+                    <div style="color:#8bb8d4; text-align: center; padding: 40px;">📷 No media</div>
+                {% endif %}
+            </div>
+
+            <div class="post-content">
+                {% if post.feed_type == 'job' %}
+                <!-- JOB POST -->
+                <div class="job-feed-card">
+                    <div class="job-title">{{ post.job_title or 'Position Title' }}</div>
+                    <div class="job-company">{{ post.organization_name or 'Company Name' }}</div>
+                    <div class="job-recruiter">👤 Recruiter: {{ post.recruiter_name or 'Not specified' }}</div>
+                    <div class="job-badges">
+                        <span class="job-badge">{{ post.experience or 'Any' }}</span>
+                        <span class="job-badge">{{ post.employment_type or 'Full Time' }}</span>
+                        <span class="job-badge">{{ post.hiring_type or 'Apply' }}</span>
+                    </div>
+                    <div class="job-description">{{ (post.job_description or post.content)[:200] }}{% if (post.job_description or post.content)|length > 200 %}...{% endif %}</div>
+
+                    {% if post.hiring_type == 'walkin' %}
+                    <div class="job-section">
+                        <div class="job-section-title">📍 Walk-In Details</div>
+                        <div class="job-meta">📅 Date: {{ post.walkin_date or 'TBD' }}</div>
+                        <div class="job-meta">⏰ Time: {{ post.walkin_start or '--' }} - {{ post.walkin_end or '--' }}</div>
+                        <div class="job-meta">📍 Location: {{ post.walkin_location or 'Not specified' }}</div>
+                    </div>
+                    <a href="/interested_job/{{ post.id }}" class="job-interest-btn">⭐ Interested ({{ post.interested_count or 0 }})</a>
+                    {% else %}
+                    <div class="job-actions">
+                        <a href="{{ post.apply_link or '#' }}" target="_blank" class="job-apply-btn">📝 Apply Now</a>
+                        <a href="/apply_job/{{ post.id }}" class="job-interest-btn">✅ Applied ({{ post.applied_count or 0 }})</a>
+                    </div>
+                    {% endif %}
+
+                    <div class="job-stats">
+                        <div class="job-stat-box"><div class="job-stat-number">{{ post.days_live or 0 }}</div><div class="job-stat-label">Days Live</div></div>
+                        <div class="job-stat-box"><div class="job-stat-number">{{ post.applied_count or 0 }}</div><div class="job-stat-label">Applications</div></div>
+                        <div class="job-stat-box"><div class="job-stat-number">{{ post.interested_count or 0 }}</div><div class="job-stat-label">Interested</div></div>
+                    </div>
+                </div>
+
+                {% elif post.feed_type == 'event' %}
+                <!-- EVENT POST -->
+                <div class="job-feed-card">
+                    <div class="job-title">{{ post.event_title or 'Event Title' }}</div>
+                    <div class="job-company">📍 {{ post.event_place or 'Location TBD' }}</div>
+                    <div class="job-badges">
+                        <span class="job-badge">📅 {{ post.event_date or 'Date TBD' }}</span>
+                        <span class="job-badge">🕒 {{ post.event_time or 'Time TBD' }}</span>
+                        <span class="job-badge">⏳ {{ post.event_duration or 'Duration TBD' }}</span>
+                    </div>
+                    <div class="job-description">{{ post.about_event or post.content or 'No description' }}</div>
+                    <div class="job-section">
+                        <div class="job-meta">🎟️ Ticket: {{ post.ticket_type or 'Free' }}</div>
+                        {% if post.ticket_type == 'Paid' %}
+                        <div class="job-meta">💰 ₹{{ post.ticket_price or '0' }}</div>
+                        {% endif %}
+                        <div class="job-meta">👥 Capacity: {{ post.total_seats or 'Unlimited' }}</div>
+                        {% if post.google_map_link %}
+                        <div class="job-meta">📍 <a href="{{ post.google_map_link }}" target="_blank">Open Location</a></div>
+                        {% endif %}
+                    </div>
+                    <div class="job-stats">
+                        <div class="job-stat-box"><div class="job-stat-number">{{ post.days_live or 0 }}</div><div class="job-stat-label">Days Live</div></div>
+                        <div class="job-stat-box"><div class="job-stat-number">{{ post.total_seats or '∞' }}</div><div class="job-stat-label">Seats</div></div>
+                    </div>
+                </div>
+
+                {% elif post.type == 'job/service' %}
+                <!-- BUSINESS/SERVICE POST -->
+                <div class="job-feed-card">
+                    {% if post.category == 'business_service' %}
+                    <div class="job-title">{{ post.company_name or 'Business Name' }}</div>
+                    <div class="job-company">{{ post.service_type or 'Service' }}</div>
+                    <div class="job-description">{{ (post.service_description or post.content)[:200] }}{% if (post.service_description or post.content)|length > 200 %}...{% endif %}</div>
+                    {% if post.phone %}<div class="job-meta">📞 {{ post.phone }}</div>{% endif %}
+                    {% if post.map_link %}<div class="job-meta">📍 <a href="{{ post.map_link }}" target="_blank">View Location</a></div>{% endif %}
+                    {% elif post.category == 'shop' %}
+                    <div class="job-title">{{ post.shop_name or 'Shop Name' }}</div>
+                    <div class="job-company">{{ post.shop_type or 'Shop Type' }}</div>
+                    <div class="job-description">{{ (post.shop_description or post.content)[:200] }}{% if (post.shop_description or post.content)|length > 200 %}...{% endif %}</div>
+                    {% if post.phone %}<div class="job-meta">📞 {{ post.phone }}</div>{% endif %}
+                    {% if post.shop_map_link %}<div class="job-meta">📍 <a href="{{ post.shop_map_link }}" target="_blank">View Location</a></div>{% endif %}
+                    {% endif %}
+                </div>
+
+                {% else %}
+                <!-- NORMAL TEXT POST -->
+                <p>{{ post.content }}</p>
+                <div class="post-meta">{{ post.type or 'General' }} • {{ post.location if post.location else 'Anywhere' }}</div>
+                {% endif %}
+
+                <!-- COMMENTS SECTION -->
+                <div id="comments-{{ post.id }}" class="comment-section">
+                    <div class="comment-list" id="comment-list-{{ post.id }}"></div>
+                    <div class="comment-box">
+                        <input type="text" id="input-{{ post.id }}" placeholder="Write a comment...">
+                        <button onclick="addComment({{ post.id }})">Post</button>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="post-actions">
+                    <button class="action-btn" onclick="toggleComments({{ post.id }})">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#8e8e8e" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Comment</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    function goToProfile() {
+        window.location.href = "/profile";
+    }
+
+    document.addEventListener("click", function(event) {
+        const popup = document.getElementById("profilePopup");
+        const userBox = document.querySelector(".user-box");
+        if (popup && userBox && !userBox.contains(event.target) && popup.style.display === "block") {
+            popup.style.display = "none";
+        }
+    });
+
+    function toggleMenu(index) {
+        let menu = document.getElementById("menu-" + index);
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            document.querySelectorAll('.menu').forEach(m => m.style.display = "none");
+            menu.style.display = "block";
+        }
+    }
+
+    document.addEventListener("click", function(e) {
+        if (!e.target.closest('.menu-btn')) {
+            document.querySelectorAll('.menu').forEach(m => m.style.display = "none");
+        }
+    });
+
+    function toggleComments(postId) {
+        let section = document.getElementById("comments-" + postId);
+        if (section.style.display === "block") {
+            section.style.display = "none";
+        } else {
+            section.style.display = "block";
+            loadComments(postId);
+        }
+    }
+
+    async function loadComments(postId) {
+        try {
+            const res = await fetch('/get_comments/' + postId);
+            const data = await res.json();
+            let container = document.getElementById("comment-list-" + postId);
+            if (container) {
+                container.innerHTML = "";
+                data.forEach(c => {
+                    container.innerHTML += `<div class="comment"><b>${c.username}</b>: ${c.text}</div>`;
+                });
+            }
+        } catch(err) {
+            console.log('Error loading comments:', err);
+        }
+    }
+
+    async function addComment(postId) {
+        let input = document.getElementById("input-" + postId);
+        let text = input.value;
+        if (!text.trim()) return;
+        try {
+            await fetch('/comment/' + postId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            });
+            input.value = "";
+            loadComments(postId);
+        } catch(err) {
+            alert("Could not add comment");
+        }
+    }
+
+    async function deletePost(postId, feedType) {
+        let confirmDelete = confirm("Are you sure you want to delete this post?");
+        if (!confirmDelete) return;
+        try {
+            const response = await fetch('/delete_post/' + postId + '/' + feedType, { method: 'POST' });
+            const data = await response.json();
+            if (data.success) {
+                document.querySelector(`[data-post-id="${postId}"]`).remove();
+            } else {
+                alert(data.message || "Delete failed");
+            }
+        } catch (error) {
+            console.log(error);
+            alert("Something went wrong");
+        }
+    }
+</script>
+
+</body>
+</html>

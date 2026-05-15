@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Event</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f4f9ff;
+            padding:30px;
+        }
+
+        .container{
+            max-width:700px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:20px;
+        }
+
+        h2{
+            margin-bottom:20px;
+            color:#2563eb;
+        }
+
+        input,
+        textarea,
+        select{
+            width:100%;
+            padding:14px;
+            margin-bottom:15px;
+            border-radius:10px;
+            border:1px solid #cbd5e1;
+        }
+
+        textarea{
+            height:120px;
+        }
+
+        button{
+            width:100%;
+            padding:15px;
+            border:none;
+            background:#2563eb;
+            color:white;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Create Event</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="text"
+               name="event_title"
+               placeholder="Event Title"
+               required>
+
+        <input type="text"
+               name="place"
+               placeholder="Place"
+               required>
+
+        <input type="text"
+               name="google_map_link"
+               placeholder="Google Map Link">
+
+        <input type="date"
+               name="event_date"
+               required>
+
+        <input type="text"
+               name="event_day"
+               placeholder="Day (Example: Sunday)"
+               required>
+
+        <input type="text"
+               name="event_time"
+               placeholder="Time (Example: 6 PM)"
+               required>
+
+        <input type="text"
+               name="duration"
+               placeholder="Duration (Example: 3 Hours)"
+               required>
+
+        <textarea
+            name="about_event"
+            placeholder="About Event"
+            required></textarea>
+
+        <select name="ticket_type" id="ticket_type">
+
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+
+        </select>
+
+        <input type="number"
+               name="ticket_price"
+               id="ticket_price"
+               placeholder="Ticket Price">
+
+        <input type="number"
+               name="total_seats"
+               placeholder="Total Seats / Capacity"
+               required>
+
+        <input type="file"
+               name="image"
+               accept="image/*">
+
+        <button type="submit">
+            Create Event
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+    const ticketType = document.getElementById("ticket_type");
+    const ticketPrice = document.getElementById("ticket_price");
+
+    ticketType.addEventListener("change", function(){
+
+        if(ticketType.value === "free"){
+
+            ticketPrice.style.display = "none";
+
+        }else{
+
+            ticketPrice.style.display = "block";
+
+        }
+
+    });
+
+    ticketType.dispatchEvent(new Event('change'));
+
+</script>
+
+</body>
+</html>
